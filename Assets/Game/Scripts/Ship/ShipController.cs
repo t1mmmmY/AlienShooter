@@ -20,7 +20,7 @@ public class ShipController : MonoBehaviour, IShip
 	Material newMaterial;
 	protected bool playingGame = false;
 	int health = 10;
-	GameObject shipMesh;
+	protected GameObject shipMesh;
 
 	public int playerNumber { get; private set; }
 
@@ -49,14 +49,8 @@ public class ShipController : MonoBehaviour, IShip
 		this.playerNumber = playerNumber;
 		this.movingArea = movingArea;
 
-		if (color != Color.black)
-		{
-			this.color = color;
-		}
-
 		CreateShip(shipName);
-
-		SetColor();
+		SetColor(color);
 	}
 
 	void CreateShip(string shipName)
@@ -65,8 +59,13 @@ public class ShipController : MonoBehaviour, IShip
 		shipMesh = GameObject.Instantiate<GameObject>(shipPrefab, this.transform);
 	}
 
-	void SetColor()
+	public void SetColor(Color color)
 	{
+		if (color != Color.black)
+		{
+			this.color = color;
+		}
+
 		newMaterial = new Material(baseMaterial);
 		newMaterial.color = color;
 		ShipPart[] allParts = GetComponentsInChildren<ShipPart>(true);

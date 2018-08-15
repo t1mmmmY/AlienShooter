@@ -8,8 +8,12 @@ public class MainMenu : MonoBehaviour
 	[SerializeField] GameObject modeSelectionPanel;
 	[SerializeField] GameObject waitingPanel;
 	[SerializeField] ShipsVariation shipsVariation;
-	[SerializeField] ExtendedScroll shipScroll;
+	[SerializeField] ExtendedScroll shipScroll1;
+	[SerializeField] ExtendedScroll shipScroll2;
 	[SerializeField] MainMenuScroll menuScroll;
+
+	bool player1Ready = false;
+	bool player2Ready = false;
 
 	public void SelectPvP()
 	{
@@ -31,24 +35,46 @@ public class MainMenu : MonoBehaviour
 		menuScroll.MoveTo(1);
 	}
 
-	public void StartGame()
+	public void GoToModesScreen()
 	{
-		if (Synchronisator.Instance.gameType == GameType.Multiplayer)
-		{
-			modeSelectionPanel.SetActive(false);
-			waitingPanel.SetActive(true);
-			NetworkHelper.Instance.JoinRoom();
-		}
-		else
-		{
-			UnityEngine.SceneManagement.SceneManager.LoadScene(1);
-		}
+		menuScroll.MoveTo(0);
 	}
 
-	public void SelectShip()
+	public void StartGame()
 	{
-		int number = shipScroll.currentNumber;
+		switch (Synchronisator.Instance.gameType)
+		{
+			case GameType.WithAI:
+				UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+				break;
+			case GameType.LocalMultiplayer:
+				if (player1Ready && player2Ready)
+				{
+					UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+				}
+				break;
+			case GameType.Multiplayer:
+				modeSelectionPanel.SetActive(false);
+				waitingPanel.SetActive(true);
+				NetworkHelper.Instance.JoinRoom();
+				break;
+		}
+
+	}
+
+	public void SelectShip1()
+	{
+		int number = shipScroll1.currentNumber;
 		Synchronisator.Instance.shipName1 = shipsVariation.shipNames[number];
+		player1Ready = true;
+		StartGame();
+	}
+
+	public void SelectShip2()
+	{
+		int number = shipScroll2.currentNumber;
+		Synchronisator.Instance.shipName2 = shipsVariation.shipNames[number];
+		player2Ready = true;
 		StartGame();
 	}
 

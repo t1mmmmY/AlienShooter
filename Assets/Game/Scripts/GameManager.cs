@@ -43,8 +43,8 @@ public class GameManager : MonoBehaviour
 				CreateLocalPlayer(PhotonNetwork.player.ID - 1, Synchronisator.Instance.shipName1, Synchronisator.Instance.shipColor1, true);
 				break;
 			case GameType.LocalMultiplayer:
-				CreateLocalPlayer(0, shipsVariation.GetRandomShip(), shipsVariation.GetRandomColor(), false);
-				CreateLocalPlayer(1, shipsVariation.GetRandomShip(), shipsVariation.GetRandomColor(), false);
+				CreateLocalPlayer(0, Synchronisator.Instance.shipName1, Synchronisator.Instance.shipColor1, false);
+				CreateLocalPlayer(1, Synchronisator.Instance.shipName2, Synchronisator.Instance.shipColor2, false);
 				break;
 			case GameType.AIvsAI:
 				CreateAI(0, shipsVariation.GetRandomShip(), shipsVariation.GetRandomColor());

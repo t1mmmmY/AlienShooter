@@ -8,7 +8,7 @@ public class ShipPart : MonoBehaviour
 
 	public IShip shipController { get; private set; }
 
-	void Start () 
+	void Start() 
 	{
 		shipController = GetComponentInParent<IShip>();
 
@@ -26,6 +26,11 @@ public class ShipPart : MonoBehaviour
 		{
 			meshRenderer.sharedMaterial = material;
 		}
+	}
+
+	public void SetUndestructible(bool undestructible)
+	{
+		this.undestructible = undestructible;
 	}
 
 	public void Hit(bool forceDestroy = false)

@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] BoxCollider2D movingArea2;
 	[SerializeField] Button quitButton;
 	[SerializeField] Button smallQuitButton;
+	[SerializeField] Button smallQuitButtonMiddle;
 	[SerializeField] ShipsVariation shipsVariation;
 
 	List<IShip> shipControllers;
@@ -43,6 +44,7 @@ public class GameManager : MonoBehaviour
 				CreateLocalPlayer(PhotonNetwork.player.ID - 1, Synchronisator.Instance.shipName1, Synchronisator.Instance.shipColor1, true);
 				break;
 			case GameType.LocalMultiplayer:
+				ShowSmallQuitButtonMiddle();
 				CreateLocalPlayer(0, Synchronisator.Instance.shipName1, Synchronisator.Instance.shipColor1, false);
 				CreateLocalPlayer(1, Synchronisator.Instance.shipName2, Synchronisator.Instance.shipColor2, false);
 				break;
@@ -157,6 +159,11 @@ public class GameManager : MonoBehaviour
 	public void ShowSmallQuitButton()
 	{
 		smallQuitButton.gameObject.SetActive(true);
+	}
+
+	public void ShowSmallQuitButtonMiddle()
+	{
+		smallQuitButtonMiddle.gameObject.SetActive(true);
 	}
 
 	public void ShowQuitButton()

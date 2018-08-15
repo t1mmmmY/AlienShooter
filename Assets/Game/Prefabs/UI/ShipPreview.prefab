@@ -899,12 +899,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c46e3141160d4263b79553668cad765, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletSpeed: 25
-  timeBetweenBullets: 0.4
-  shipWidth: 12
   movingArea: {fileID: 0}
-  shootPoint: {fileID: 4469884498335312}
-  bulletPrefab: {fileID: 114163134075301084, guid: a52bda9aafcc64c2ebeb791c62671e1f,
+  bulletPrefab: {fileID: 114163134075301084, guid: 63fde39e7b6ff400ca34e3e3558077dc,
     type: 2}
   hitEffectPrefab: {fileID: 114386220705050136, guid: d065a0f41ca434fc19c22a438d0047da,
     type: 2}

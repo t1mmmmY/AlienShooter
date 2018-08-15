@@ -4,23 +4,75 @@ using UnityEngine;
 
 public class ShipController : MonoBehaviour, IShip 
 {
-	[SerializeField] float bulletSpeed = 10.0f;
-	[SerializeField] float timeBetweenBullets = 1.0f;
-	[SerializeField] protected float shipWidth = 12;
+	protected float bulletSpeed
+	{
+		get
+		{
+			if (shipMesh != null)
+			{
+				return shipMesh.bulletSpeed;
+			}
+			else
+			{
+				return 25;
+			}
+		}
+	}
+	protected float timeBetweenBullets
+	{
+		get
+		{
+			if (shipMesh != null)
+			{
+				return shipMesh.timeBetweenBullets;
+			}
+			else
+			{
+				return 0.4f;
+			}
+		}
+	}
+	protected float shipWidth
+	{
+		get
+		{
+			if (shipMesh != null)
+			{
+				return shipMesh.shipWidth;
+			}
+			else
+			{
+				return 12;
+			}
+		}
+	}
 
 	[SerializeField] protected BoxCollider2D movingArea;
-	[SerializeField] protected Transform shootPoint;
-	[SerializeField] Bullet bulletPrefab;
+	protected Transform[] shootPoints
+	{
+		get
+		{
+			if (shipMesh != null)
+			{
+				return shipMesh.shootPoints;
+			}
+			else
+			{
+				return null;
+			}
+		}
+	}
+	[SerializeField] protected Bullet bulletPrefab;
 	[SerializeField] HitEffect hitEffectPrefab;
 	[SerializeField] HealthBar healthBar;
 
 	[SerializeField] Material baseMaterial;
 	[SerializeField] Color color;
 
-	Material newMaterial;
+	protected Material newMaterial;
 	protected bool playingGame = false;
 	int health = 10;
-	protected GameObject shipMesh;
+	protected UniqueShip shipMesh;
 
 	public int playerNumber { get; private set; }
 
@@ -55,8 +107,8 @@ public class ShipController : MonoBehaviour, IShip
 
 	void CreateShip(string shipName)
 	{
-		GameObject shipPrefab = Resources.Load<GameObject>("Ships/" + shipName);
-		shipMesh = GameObject.Instantiate<GameObject>(shipPrefab, this.transform);
+		UniqueShip shipPrefab = Resources.Load<UniqueShip>("Ships/" + shipName);
+		shipMesh = GameObject.Instantiate<UniqueShip>(shipPrefab, this.transform);
 	}
 
 	public void SetColor(Color color)
@@ -111,8 +163,11 @@ public class ShipController : MonoBehaviour, IShip
 
 	protected void Shoot()
 	{
-		Bullet bullet = GameObject.Instantiate<Bullet>(bulletPrefab, shootPoint.position, shootPoint.rotation);
-		bullet.Init(shootPoint.transform.up * bulletSpeed, newMaterial, this);
+		foreach (Transform shootPoint in shootPoints)
+		{
+			Bullet bullet = GameObject.Instantiate<Bullet>(bulletPrefab, shootPoint.position, shootPoint.rotation);
+			bullet.Init(shootPoint.transform.up * bulletSpeed, newMaterial, this);
+		}
 	}
 
 	public void Hit(Vector3 position)

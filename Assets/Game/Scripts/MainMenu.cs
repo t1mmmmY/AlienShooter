@@ -12,6 +12,11 @@ public class MainMenu : MonoBehaviour
 	[SerializeField] ExtendedScroll shipScroll2;
 	[SerializeField] MainMenuScroll menuScroll;
 
+	[SerializeField] GameObject player1Selection;
+	[SerializeField] GameObject player2Selection;
+
+	[SerializeField] SelectShipButton[] selectShipButtons;
+
 	bool player1Ready = false;
 	bool player2Ready = false;
 
@@ -32,7 +37,13 @@ public class MainMenu : MonoBehaviour
 
 	public void GoToShipScreen()
 	{
+		player2Selection.SetActive(Synchronisator.Instance.gameType == GameType.LocalMultiplayer);
 		menuScroll.MoveTo(1);
+
+		foreach (SelectShipButton selectButton in selectShipButtons)
+		{
+			selectButton.ResetButton();
+		}
 	}
 
 	public void GoToModesScreen()

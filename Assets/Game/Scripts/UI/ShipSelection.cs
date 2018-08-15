@@ -9,7 +9,7 @@ public class ShipSelection : MonoBehaviour
 	[SerializeField] Transform content;
 	List<ShipPreview> allShips = new List<ShipPreview>();
 
-	void Start()
+	void Awake()
 	{
 		foreach (string shipName in shipsVariation.shipNames)
 		{

@@ -9,6 +9,7 @@ public class Bullet : MonoBehaviour
 	public ShipController owner { get; private set; }
 
 	[SerializeField] HitEffect hitEffectPrefab;
+	[SerializeField] MeshRenderer meshRenderer;
 	bool used = false;
 
 	public Vector2 position
@@ -30,7 +31,7 @@ public class Bullet : MonoBehaviour
 		BulletsManager.AddBullet(this);
 		bulletRigidbody.velocity = speed;
 
-		MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
+//		MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
 
 		if (meshRenderer != null)
 		{

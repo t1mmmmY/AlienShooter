@@ -14,4 +14,15 @@ public class EndLevel : MonoBehaviour
 
 		Destroy(other.gameObject);
 	}
+
+	void OnTriggerStay2D(Collider2D other) 
+	{
+		Bullet bullet = other.GetComponent<Bullet>();
+		if (bullet != null)
+		{
+			BulletsManager.RemoveBullet(bullet);
+		}
+
+		Destroy(other.gameObject);
+	}
 }

@@ -23,7 +23,7 @@ public class NetworkController : Photon.MonoBehaviour, IPunObservable, IShip
 	string shipName = "";
 	GameObject shipMesh;
 
-	public int playerNumber { get; private set; }
+	public int playerNumber { get; set; }
 
 
 	public Vector2 position

@@ -77,10 +77,27 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	public void NextEnemy()
+	public void NextEnemy(IShip oldShip)
 	{
+		if (shipControllers.Contains(oldShip))
+		{
+			shipControllers.Remove(oldShip);
+		}
 		IShip newShip = CreateAI(1, shipsVariation.GetRandomShip(), shipsVariation.GetRandomColor());
 		newShip.StartGame();
+		shipControllers.Add(newShip);
+	}
+
+	public IShip GetEnemyShip(IShip currentShip)
+	{
+		foreach (IShip ship in shipControllers)
+		{
+			if (ship != currentShip)
+			{
+				return ship;
+			}
+		}
+		return null;
 	}
 
 	IShip CreateLocalPlayer(int id, string shipName, Color shipColor, bool multiplayer)

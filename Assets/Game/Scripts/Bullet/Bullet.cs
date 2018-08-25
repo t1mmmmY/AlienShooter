@@ -12,6 +12,8 @@ public class Bullet : MonoBehaviour
 	[SerializeField] MeshRenderer meshRenderer;
 	bool used = false;
 
+	public Vector2 speed { get; private set; }
+
 	public Vector2 position
 	{
 		get
@@ -27,15 +29,20 @@ public class Bullet : MonoBehaviour
 
 	public void Init(Vector2 speed, Material material, ShipController owner)
 	{
+		this.speed = speed;
 		this.owner = owner;
 		BulletsManager.AddBullet(this);
 		bulletRigidbody.velocity = speed;
 
-//		MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
-
 		if (meshRenderer != null)
 		{
 			meshRenderer.sharedMaterial = material;
+
+			MeshRenderer[] childMeshes = GetComponentsInChildren<MeshRenderer>();
+			foreach (MeshRenderer childMesh in childMeshes)
+			{
+				childMesh.sharedMaterial = material;
+			}
 		}
 	}
 

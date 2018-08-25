@@ -20,6 +20,11 @@ public class MainMenu : MonoBehaviour
 	bool player1Ready = false;
 	bool player2Ready = false;
 
+	void Start()
+	{
+		Application.targetFrameRate = 30;
+	}
+
 	public void SelectPvP()
 	{
 		Synchronisator.Instance.gameType = GameType.LocalMultiplayer;

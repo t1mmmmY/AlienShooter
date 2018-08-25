@@ -8,20 +8,33 @@ public class HealthBar : MonoBehaviour
 
 	[SerializeField] Material green;
 	[SerializeField] Material red;
+	[SerializeField] Material orange;
 
-	public void Init()
+	int health = 20;
+	float healthCoef = 0.5f;
+
+	public void Init(int health)
 	{
+		this.health = health;
+		healthCoef = healtBar.Length / health;
 		foreach (MeshRenderer meshR in healtBar)
 		{
 			meshR.material = green;
 		}
 	}
 
-	public void SetHealth(int health)
+	public void SetHealth(int currentHealth)
 	{
-		for (int i = 0; i < healtBar.Length; i++)
+		for (int i = 0; i < health; i++)
 		{
-			healtBar[i].material = i < health ? green : red;
+			if (i == currentHealth)
+			{
+				healtBar[(int)(i * healthCoef)].material = orange;
+			}
+			else
+			{
+				healtBar[(int)(i * healthCoef)].material = i < currentHealth ? green : red;
+			}
 		}
 	}
 }

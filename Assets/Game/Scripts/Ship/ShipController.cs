@@ -4,6 +4,19 @@ using UnityEngine;
 
 public class ShipController : MonoBehaviour, IShip 
 {
+	[SerializeField] protected BoxCollider2D movingArea;
+	[SerializeField] HitEffect hitEffectPrefab;
+	[SerializeField] HealthBar healthBar;
+	[SerializeField] Material baseMaterial;
+	[SerializeField] Color color;
+
+	protected Material newMaterial;
+	protected bool playingGame = false;
+
+	protected UniqueShip shipMesh;
+
+	public int playerNumber { get; set; }
+
 	protected float bulletSpeed
 	{
 		get
@@ -18,6 +31,22 @@ public class ShipController : MonoBehaviour, IShip
 			}
 		}
 	}
+
+	protected float specialBulletSpeed
+	{
+		get
+		{
+			if (shipMesh != null)
+			{
+				return shipMesh.specialBulletSpeed;
+			}
+			else
+			{
+				return 25;
+			}
+		}
+	}
+
 	protected float timeBetweenBullets
 	{
 		get
@@ -32,6 +61,22 @@ public class ShipController : MonoBehaviour, IShip
 			}
 		}
 	}
+
+	protected float timeBetweenSpecialBullets
+	{
+		get
+		{
+			if (shipMesh != null)
+			{
+				return shipMesh.timeBetweenSpecialBullets;
+			}
+			else
+			{
+				return 1.0f;
+			}
+		}
+	}
+
 	protected float shipWidth
 	{
 		get
@@ -47,34 +92,27 @@ public class ShipController : MonoBehaviour, IShip
 		}
 	}
 
-	[SerializeField] protected BoxCollider2D movingArea;
-	protected Transform[] shootPoints
+	int health
 	{
 		get
 		{
 			if (shipMesh != null)
 			{
-				return shipMesh.shootPoints;
+				return shipMesh.health;
 			}
 			else
 			{
-				return null;
+				return 20;
+			}
+		}
+		set
+		{
+			if (shipMesh != null)
+			{
+				shipMesh.health = value;
 			}
 		}
 	}
-	[SerializeField] protected Bullet bulletPrefab;
-	[SerializeField] HitEffect hitEffectPrefab;
-	[SerializeField] HealthBar healthBar;
-
-	[SerializeField] Material baseMaterial;
-	[SerializeField] Color color;
-
-	protected Material newMaterial;
-	protected bool playingGame = false;
-	int health = 10;
-	protected UniqueShip shipMesh;
-
-	public int playerNumber { get; private set; }
 
 	public int team
 	{
@@ -92,6 +130,66 @@ public class ShipController : MonoBehaviour, IShip
 		}
 	}
 
+	protected Bullet bulletPrefab
+	{
+		get
+		{
+			if (shipMesh != null)
+			{
+				return shipMesh.bulletPrefab;
+			}
+			else
+			{
+				return null;
+			}
+		}
+	}
+
+	protected Bullet specialBulletPrefab
+	{
+		get
+		{
+			if (shipMesh != null)
+			{
+				return shipMesh.specialBulletPrefab;
+			}
+			else
+			{
+				return null;
+			}
+		}
+	}
+
+	protected Transform[] shootPoints
+	{
+		get
+		{
+			if (shipMesh != null)
+			{
+				return shipMesh.shootPoints;
+			}
+			else
+			{
+				return null;
+			}
+		}
+	}
+
+	protected Transform[] specialShootPoints
+	{
+		get
+		{
+			if (shipMesh != null)
+			{
+				return shipMesh.specialShootPoints;
+			}
+			else
+			{
+				return null;
+			}
+		}
+	}
+
 	protected virtual void Start()
 	{
 	}
@@ -101,7 +199,14 @@ public class ShipController : MonoBehaviour, IShip
 		this.playerNumber = playerNumber;
 		this.movingArea = movingArea;
 
-		CreateShip(shipName);
+		if (shipName != "")
+		{
+			CreateShip(shipName);
+		}
+		else
+		{
+			InitShipMesh();
+		}
 		SetColor(color);
 	}
 
@@ -109,6 +214,11 @@ public class ShipController : MonoBehaviour, IShip
 	{
 		UniqueShip shipPrefab = Resources.Load<UniqueShip>("Ships/" + shipName);
 		shipMesh = GameObject.Instantiate<UniqueShip>(shipPrefab, this.transform);
+	}
+
+	void InitShipMesh()
+	{
+		shipMesh = GetComponentInChildren<UniqueShip>();
 	}
 
 	public void SetColor(Color color)
@@ -119,7 +229,7 @@ public class ShipController : MonoBehaviour, IShip
 		}
 
 		newMaterial = new Material(baseMaterial);
-		newMaterial.color = color;
+		newMaterial.color = this.color;
 		ShipPart[] allParts = GetComponentsInChildren<ShipPart>(true);
 		foreach (ShipPart part in allParts)
 		{
@@ -132,6 +242,7 @@ public class ShipController : MonoBehaviour, IShip
 		playingGame = true;
 		BulletsManager.StartGame();
 		StartCoroutine("ShootLoop");
+		StartCoroutine("SpecialShootLoop");
 	}
 
 	protected virtual void EndGame()
@@ -161,12 +272,36 @@ public class ShipController : MonoBehaviour, IShip
 		} while (playingGame);
 	}
 
+	IEnumerator SpecialShootLoop()
+	{
+		do
+		{
+			yield return new WaitForSeconds(timeBetweenSpecialBullets);
+			SpecialShoot();
+		} while (playingGame);
+	}
+
 	protected void Shoot()
 	{
 		foreach (Transform shootPoint in shootPoints)
 		{
-			Bullet bullet = GameObject.Instantiate<Bullet>(bulletPrefab, shootPoint.position, shootPoint.rotation);
-			bullet.Init(shootPoint.transform.up * bulletSpeed, newMaterial, this);
+			if (bulletPrefab != null)
+			{
+				Bullet bullet = GameObject.Instantiate<Bullet>(bulletPrefab, shootPoint.position, shootPoint.rotation);
+				bullet.Init(shootPoint.transform.up * bulletSpeed, newMaterial, this);
+			}
+		}
+	}
+
+	protected void SpecialShoot()
+	{
+		foreach (Transform shootPoint in specialShootPoints)
+		{
+			if (specialBulletPrefab != null)
+			{
+				Bullet bullet = GameObject.Instantiate<Bullet>(specialBulletPrefab, shootPoint.position, shootPoint.rotation);
+				bullet.Init(shootPoint.transform.up * specialBulletSpeed, newMaterial, this);
+			}
 		}
 	}
 
@@ -202,7 +337,10 @@ public class ShipController : MonoBehaviour, IShip
 		}
 		else
 		{
-			GameManager.Instance.NextEnemy();
+			if (playerNumber != 0)
+			{
+				GameManager.Instance.NextEnemy(this);
+			}
 		}
 
 		ShipPart[] shipParts = GetComponentsInChildren<ShipPart>();

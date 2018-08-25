@@ -7677,6 +7677,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 988b12fd057af453ca17a2ec4c361a24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _fireMode: 1
+  _specialFireMode: 0
   _bulletSpeed: 25
   _specialBulletSpeed: 20
   _timeBetweenBullets: 0.3

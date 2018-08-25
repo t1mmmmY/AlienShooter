@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
 			case GameType.WithAI:
 				ShowSmallQuitButton();
 				CreateLocalPlayer(0, Synchronisator.Instance.shipName1, Synchronisator.Instance.shipColor1, false);
-				Color enemyColor = shipsVariation.GetRandomColor();
+				Color enemyColor = shipsVariation.GetRandomColor(Synchronisator.Instance.shipColor1);
 				CreateAI(1, shipsVariation.GetRandomShip(), enemyColor);
 				break;
 			case GameType.Multiplayer:
@@ -49,8 +49,8 @@ public class GameManager : MonoBehaviour
 				CreateLocalPlayer(1, Synchronisator.Instance.shipName2, Synchronisator.Instance.shipColor2, false);
 				break;
 			case GameType.AIvsAI:
-				CreateAI(0, shipsVariation.GetRandomShip(), shipsVariation.GetRandomColor());
-				CreateAI(1, shipsVariation.GetRandomShip(), shipsVariation.GetRandomColor());
+				CreateAI(0, shipsVariation.GetRandomShip(), shipsVariation.GetRandomColor(Color.white));
+				CreateAI(1, shipsVariation.GetRandomShip(), shipsVariation.GetRandomColor(Color.white));
 				break;
 		}
 
@@ -83,7 +83,7 @@ public class GameManager : MonoBehaviour
 		{
 			shipControllers.Remove(oldShip);
 		}
-		IShip newShip = CreateAI(1, shipsVariation.GetRandomShip(), shipsVariation.GetRandomColor());
+		IShip newShip = CreateAI(1, shipsVariation.GetRandomShip(), shipsVariation.GetRandomColor(Synchronisator.Instance.shipColor1));
 		newShip.StartGame();
 		shipControllers.Add(newShip);
 	}

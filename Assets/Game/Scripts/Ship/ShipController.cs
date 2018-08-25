@@ -17,6 +17,36 @@ public class ShipController : MonoBehaviour, IShip
 
 	public int playerNumber { get; set; }
 
+	protected FireMode fireMode
+	{
+		get
+		{
+			if (shipMesh != null)
+			{
+				return shipMesh.fireMode;
+			}
+			else
+			{
+				return FireMode.Burst;
+			}
+		}
+	}
+
+	protected FireMode specialFireMode
+	{
+		get
+		{
+			if (shipMesh != null)
+			{
+				return shipMesh.specialFireMode;
+			}
+			else
+			{
+				return FireMode.Burst;
+			}
+		}
+	}
+
 	protected float bulletSpeed
 	{
 		get
@@ -241,8 +271,9 @@ public class ShipController : MonoBehaviour, IShip
 	{
 		playingGame = true;
 		BulletsManager.StartGame();
-		StartCoroutine("ShootLoop");
-		StartCoroutine("SpecialShootLoop");
+		StartCoroutine(ShootLoop(false));
+		StartCoroutine(ShootLoop(true));
+//		StartCoroutine("SpecialShootLoop");
 	}
 
 	protected virtual void EndGame()
@@ -263,47 +294,83 @@ public class ShipController : MonoBehaviour, IShip
 		}
 	}
 
-	IEnumerator ShootLoop()
+	IEnumerator ShootLoop(bool special)
 	{
+		int shootPointNumber = -1;
+		float time = special ? timeBetweenSpecialBullets : timeBetweenBullets;
+		FireMode mode = special ? specialFireMode : fireMode;
+		Transform[] points = special ? specialShootPoints : shootPoints;
+
+		if (points == null)
+		{
+			yield break;
+		}
+
 		do
 		{
-			yield return new WaitForSeconds(timeBetweenBullets);
-			Shoot();
+			yield return new WaitForSeconds(time);
+			switch (mode)
+			{
+				case FireMode.Burst:
+					for (int i = 0; i < points.Length; i++)
+					{
+						Shoot(points[i], special);
+					}
+					break;
+				case FireMode.OneByOne:
+					shootPointNumber++;
+					if (shootPointNumber >= points.Length)
+					{
+						shootPointNumber = 0;
+					}
+
+					Shoot(points[shootPointNumber], special);
+					break;
+			}
 		} while (playingGame);
 	}
 
-	IEnumerator SpecialShootLoop()
-	{
-		do
-		{
-			yield return new WaitForSeconds(timeBetweenSpecialBullets);
-			SpecialShoot();
-		} while (playingGame);
-	}
+//	IEnumerator SpecialShootLoop()
+//	{
+//		int shootPointNumber = -1;
+//		do
+//		{
+//			yield return new WaitForSeconds(timeBetweenSpecialBullets);
+//			switch (specialFireMode)
+//			{
+//				case FireMode.Burst:
+//					for (int i = 0; i < specialShootPoints.Length; i++)
+//					{
+//						SpecialShoot(i);
+//					}
+//					break;
+//				case FireMode.OneByOne:
+//					break;
+//			}
+//		} while (playingGame);
+//	}
 
-	protected void Shoot()
+	protected void Shoot(Transform shootPoint, bool special)
 	{
-		foreach (Transform shootPoint in shootPoints)
+		Bullet prefab = special ? specialBulletPrefab : bulletPrefab;
+		float speed = special ? specialBulletSpeed : bulletSpeed;
+
+		if (prefab != null)
 		{
-			if (bulletPrefab != null)
-			{
-				Bullet bullet = GameObject.Instantiate<Bullet>(bulletPrefab, shootPoint.position, shootPoint.rotation);
-				bullet.Init(shootPoint.transform.up * bulletSpeed, newMaterial, this);
-			}
+			Bullet bullet = GameObject.Instantiate<Bullet>(prefab, shootPoint.position, shootPoint.rotation);
+			bullet.Init(shootPoint.transform.up * speed, newMaterial, this);
 		}
 	}
 
-	protected void SpecialShoot()
-	{
-		foreach (Transform shootPoint in specialShootPoints)
-		{
-			if (specialBulletPrefab != null)
-			{
-				Bullet bullet = GameObject.Instantiate<Bullet>(specialBulletPrefab, shootPoint.position, shootPoint.rotation);
-				bullet.Init(shootPoint.transform.up * specialBulletSpeed, newMaterial, this);
-			}
-		}
-	}
+//	protected void SpecialShoot(int shootPointNumber)
+//	{
+//		if (specialBulletPrefab != null)
+//		{
+//			Bullet bullet = GameObject.Instantiate<Bullet>(specialBulletPrefab, specialShootPoints[shootPointNumber].position,
+//				specialShootPoints[shootPointNumber].rotation);
+//			bullet.Init(specialShootPoints[shootPointNumber].transform.up * specialBulletSpeed, newMaterial, this);
+//		}
+//	}
 
 	public void Hit(Vector3 position)
 	{

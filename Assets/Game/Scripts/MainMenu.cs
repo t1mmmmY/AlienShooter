@@ -23,6 +23,8 @@ public class MainMenu : MonoBehaviour
 	void Start()
 	{
 		Application.targetFrameRate = 30;
+		player1Selection.SetActive(false);
+		player2Selection.SetActive(false);
 	}
 
 	public void SelectPvP()
@@ -42,6 +44,9 @@ public class MainMenu : MonoBehaviour
 
 	public void GoToShipScreen()
 	{
+		player1Selection.SetActive(false);
+		player2Selection.SetActive(false);
+		player1Selection.SetActive(true);
 		player2Selection.SetActive(Synchronisator.Instance.gameType == GameType.LocalMultiplayer);
 		menuScroll.MoveTo(1);
 

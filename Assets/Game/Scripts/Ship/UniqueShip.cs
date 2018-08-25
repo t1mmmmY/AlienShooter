@@ -11,6 +11,7 @@ public enum FireMode
 public class UniqueShip : MonoBehaviour 
 {
 	[SerializeField] FireMode _fireMode = FireMode.Burst;
+	[SerializeField] FireMode _specialFireMode = FireMode.Burst;
 	[SerializeField] float _bulletSpeed = 25.0f;
 	[SerializeField] float _specialBulletSpeed = 25.0f;
 	[SerializeField] float _timeBetweenBullets = 0.4f;
@@ -26,6 +27,11 @@ public class UniqueShip : MonoBehaviour
 	public FireMode fireMode
 	{
 		get { return _fireMode; }
+	}
+
+	public FireMode specialFireMode
+	{
+		get { return _specialFireMode; }
 	}
 
 	public float bulletSpeed

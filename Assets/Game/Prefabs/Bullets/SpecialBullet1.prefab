@@ -188,6 +188,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   extraForce: 15
+  increaseFluctuations: 10
   changeVelocitySpeed: 8
 --- !u!198 &198048698617003384
 ParticleSystem:

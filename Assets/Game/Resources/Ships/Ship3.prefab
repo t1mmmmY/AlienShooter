@@ -7607,10 +7607,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 988b12fd057af453ca17a2ec4c361a24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _fireMode: 1
+  _specialFireMode: 1
   _bulletSpeed: 25
   _specialBulletSpeed: 25
-  _timeBetweenBullets: 0.5
-  _timeBetweenSpecialBullets: 0.75
+  _timeBetweenBullets: 0.2
+  _timeBetweenSpecialBullets: 0.2
   _shipWidth: 14
   _health: 20
   _bulletPrefab: {fileID: 114163134075301084, guid: a52bda9aafcc64c2ebeb791c62671e1f,
@@ -7621,8 +7623,8 @@ MonoBehaviour:
   - {fileID: 4243738969252364}
   - {fileID: 4789317080730964}
   _specialShootPoints:
-  - {fileID: 4238652774419392}
   - {fileID: 4550703026386174}
+  - {fileID: 4238652774419392}
 --- !u!114 &114893475572026044
 MonoBehaviour:
   m_ObjectHideFlags: 1

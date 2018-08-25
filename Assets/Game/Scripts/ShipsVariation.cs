@@ -7,9 +7,15 @@ public class ShipsVariation : ScriptableObject
 	public Color[] shipColors;
 	public string[] shipNames;
 
-	public Color GetRandomColor()
+	public Color GetRandomColor(Color exclusion)
 	{
-		return shipColors[Random.Range(0, shipColors.Length)];
+		Color selectedColor = Color.white;
+		do
+		{
+			selectedColor = shipColors[Random.Range(0, shipColors.Length)];
+		} while (selectedColor == exclusion);
+		return selectedColor;
+//		return shipColors[Random.Range(0, shipColors.Length)];
 	}
 
 	public string GetRandomShip()

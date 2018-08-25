@@ -832,6 +832,7 @@ MonoBehaviour:
   healthBar: {fileID: 114567457722920778}
   baseMaterial: {fileID: 2100000, guid: 0e8efec36d8d84b76af966e9175ea638, type: 2}
   color: {r: 0.29411763, g: 0.48752952, b: 1, a: 1}
-  dangerDistance: 80
+  dangerDistance: 30
   accelerationSpeed: 5
+  xBulletSpeed: 20
   revert: 0

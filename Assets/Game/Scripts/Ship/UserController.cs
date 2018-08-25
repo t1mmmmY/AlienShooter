@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class UserController : ShipController 
 {
+	[SerializeField] float shipSpeed = 2.0f;
 
 	protected override void Start()
 	{
@@ -24,7 +25,7 @@ public class UserController : ShipController
 					touchPosition.y += 20;
 					float x = touchPosition.x - position.x;
 					float y = touchPosition.y - position.y;
-					Vector3 movement = Vector3.ClampMagnitude(new Vector3(x, y, 0), 1.0f);
+					Vector3 movement = Vector3.ClampMagnitude(new Vector3(x, y, 0), 1.0f * shipSpeed);
 					Move(movement);
 				}
 			}
@@ -36,7 +37,7 @@ public class UserController : ShipController
 					touchPosition.y -= 20;
 					float x = position.x -touchPosition.x;
 					float y = position.y - touchPosition.y;
-					Vector3 movement = Vector3.ClampMagnitude(new Vector3(x, y, 0), 1.0f);
+					Vector3 movement = Vector3.ClampMagnitude(new Vector3(x, y, 0), 1.0f * shipSpeed);
 					Move(movement);
 				}
 			}
@@ -46,7 +47,7 @@ public class UserController : ShipController
 
 		float horizontal = Input.GetAxis("Horizontal");
 		float vertical = Input.GetAxis("Vertical");
-		Move(new Vector2(horizontal, vertical));
+		Move(new Vector2(horizontal, vertical) * shipSpeed);
 
 		if (Input.GetMouseButton(0))
 		{
@@ -58,7 +59,7 @@ public class UserController : ShipController
 					touchPosition.y += 20;
 					float x = touchPosition.x - position.x;
 					float y = touchPosition.y - position.y;
-					Vector3 movement = Vector3.ClampMagnitude(new Vector3(x, y, 0), 1.0f);
+					Vector3 movement = Vector3.ClampMagnitude(new Vector3(x, y, 0), 1.0f * shipSpeed);
 					Move(movement);
 				}
 			}
@@ -70,7 +71,7 @@ public class UserController : ShipController
 					touchPosition.y -= 20;
 					float x = position.x -touchPosition.x;
 					float y = position.y - touchPosition.y;
-					Vector3 movement = Vector3.ClampMagnitude(new Vector3(x, y, 0), 1.0f);
+					Vector3 movement = Vector3.ClampMagnitude(new Vector3(x, y, 0), 1.0f * shipSpeed);
 					Move(movement);
 				}
 			}

@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Bullet : MonoBehaviour 
 {
-	Rigidbody2D bulletRigidbody;
+	public Rigidbody2D bulletRigidbody { get; private set; }
 	public ShipController owner { get; private set; }
 
 	[SerializeField] HitEffect hitEffectPrefab;

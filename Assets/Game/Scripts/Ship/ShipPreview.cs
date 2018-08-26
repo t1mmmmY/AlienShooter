@@ -61,33 +61,6 @@ public class ShipPreview : ShipController
 		}
 	}
 
-//	void ShootPreview()
-//	{
-//		foreach (Transform shootPoint in shootPoints)
-//		{
-//			if (bulletPrefab != null)
-//			{
-//				Bullet bullet = GameObject.Instantiate<Bullet>(bulletPrefab, shootPoint.position, shootPoint.rotation);
-//				bullet.transform.parent = this.transform;
-//				bullet.transform.localScale *= 2;
-//				bullet.Init(shootPoint.transform.up * bulletSpeed * 2, newMaterial, this);
-//			}
-//		}
-//	}
-//
-//	void SpecialShootPreview()
-//	{
-//		foreach (Transform shootPoint in specialShootPoints)
-//		{
-//			if (specialBulletPrefab != null)
-//			{
-//				Bullet bullet = GameObject.Instantiate<Bullet>(specialBulletPrefab, shootPoint.position, shootPoint.rotation);
-//				bullet.transform.parent = this.transform;
-//				bullet.transform.localScale *= 2;
-//				bullet.Init(shootPoint.transform.up * specialBulletSpeed * 2, newMaterial, this);
-//			}
-//		}
-//	}
 
 	IEnumerator PreviewShootLoop(bool special)
 	{
@@ -97,6 +70,10 @@ public class ShipPreview : ShipController
 		Transform[] points = special ? specialShootPoints : shootPoints;
 
 		if (points == null)
+		{
+			yield break;
+		}
+		if (points.Length == 0)
 		{
 			yield break;
 		}
@@ -125,21 +102,4 @@ public class ShipPreview : ShipController
 		} while (true);
 	}
 
-//	IEnumerator PreviewShootLoop()
-//	{
-//		do
-//		{
-//			yield return new WaitForSeconds(timeBetweenBullets);
-//			ShootPreview();
-//		} while (true);
-//	}
-//
-//	IEnumerator PreviewSpecialShootLoop()
-//	{
-//		do
-//		{
-//			yield return new WaitForSeconds(timeBetweenSpecialBullets);
-//			SpecialShootPreview();
-//		} while (true);
-//	}
 }

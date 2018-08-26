@@ -16,6 +16,7 @@ public class SelectShipButton : MonoBehaviour
 
 	public void ResetButton()
 	{
+		normalColor = Synchronisator.Instance.shipColor1;
 		button.image.color = normalColor;
 		buttonLabel.color = normalColor;
 		buttonLabel.text = "START";

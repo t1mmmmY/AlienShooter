@@ -156,15 +156,15 @@ public class AIController : ShipController
 		return Mathf.Clamp(position.x - randomPos, -1.0f, 1.0f);
 	}
 
-	void OnDrawGizmos()
-	{
-		List<Bullet> enemyBullets = BulletsManager.GetEnemyBullets(this);
-		foreach (Bullet bullet in enemyBullets)
-		{
-			Vector2 bulletPos = bullet.position + bullet.bulletRigidbody.velocity * xBulletSpeed * Time.deltaTime;
-			Gizmos.DrawSphere(bulletPos, 1.0f);
-		}
-	}
+//	void OnDrawGizmos()
+//	{
+//		List<Bullet> enemyBullets = BulletsManager.GetEnemyBullets(this);
+//		foreach (Bullet bullet in enemyBullets)
+//		{
+//			Vector2 bulletPos = bullet.position + bullet.bulletRigidbody.velocity * xBulletSpeed * Time.deltaTime;
+//			Gizmos.DrawSphere(bulletPos, 1.0f);
+//		}
+//	}
 }
 
 public class BulletComparer : IComparer<Vector2>

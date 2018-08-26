@@ -305,6 +305,10 @@ public class ShipController : MonoBehaviour, IShip
 		{
 			yield break;
 		}
+		if (points.Length == 0)
+		{
+			yield break;
+		}
 
 		do
 		{
@@ -330,26 +334,6 @@ public class ShipController : MonoBehaviour, IShip
 		} while (playingGame);
 	}
 
-//	IEnumerator SpecialShootLoop()
-//	{
-//		int shootPointNumber = -1;
-//		do
-//		{
-//			yield return new WaitForSeconds(timeBetweenSpecialBullets);
-//			switch (specialFireMode)
-//			{
-//				case FireMode.Burst:
-//					for (int i = 0; i < specialShootPoints.Length; i++)
-//					{
-//						SpecialShoot(i);
-//					}
-//					break;
-//				case FireMode.OneByOne:
-//					break;
-//			}
-//		} while (playingGame);
-//	}
-
 	protected void Shoot(Transform shootPoint, bool special)
 	{
 		Bullet prefab = special ? specialBulletPrefab : bulletPrefab;
@@ -361,16 +345,6 @@ public class ShipController : MonoBehaviour, IShip
 			bullet.Init(shootPoint.transform.up * speed, newMaterial, this);
 		}
 	}
-
-//	protected void SpecialShoot(int shootPointNumber)
-//	{
-//		if (specialBulletPrefab != null)
-//		{
-//			Bullet bullet = GameObject.Instantiate<Bullet>(specialBulletPrefab, specialShootPoints[shootPointNumber].position,
-//				specialShootPoints[shootPointNumber].rotation);
-//			bullet.Init(specialShootPoints[shootPointNumber].transform.up * specialBulletSpeed, newMaterial, this);
-//		}
-//	}
 
 	public void Hit(Vector3 position)
 	{

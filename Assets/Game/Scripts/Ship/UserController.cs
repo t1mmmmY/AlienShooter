@@ -17,7 +17,7 @@ public class UserController : ShipController
 
 		foreach (Touch touch in touches)
 		{
-			if (playerNumber % 2 == 0)
+			if (playerNumber % 2 == 0 || Synchronisator.Instance.gameType == GameType.Multiplayer)
 			{
 				if (touch.position.y < Screen.height / 2)
 				{
@@ -51,7 +51,7 @@ public class UserController : ShipController
 
 		if (Input.GetMouseButton(0))
 		{
-			if (playerNumber % 2 == 0)
+			if (playerNumber % 2 == 0 || Synchronisator.Instance.gameType == GameType.Multiplayer)
 			{
 				if (Input.mousePosition.y < Screen.height / 2)
 				{

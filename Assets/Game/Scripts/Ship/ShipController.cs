@@ -122,7 +122,7 @@ public class ShipController : MonoBehaviour, IShip
 		}
 	}
 
-	int health
+	public int health
 	{
 		get
 		{

@@ -105,7 +105,9 @@ public class GameManager : MonoBehaviour
 		if (multiplayer)
 		{
 			GameObject shipPrefab = PhotonNetwork.Instantiate("ShipBase/" + "SpaceShipMult", Vector3.zero, Quaternion.identity, 0);
-			NetworkController newShip = shipPrefab.GetComponent<NetworkController>();
+			ShipController newShip = shipPrefab.GetComponent<ShipController>();
+//			GameObject shipPrefab = PhotonNetwork.Instantiate("ShipBase/" + "SpaceShipMult", Vector3.zero, Quaternion.identity, 0);
+//			NetworkController newShip = shipPrefab.GetComponent<NetworkController>();
 
 			SetupShipPosition(id, shipName, shipColor, newShip);
 
@@ -158,20 +160,20 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	void SetupShipPosition(int id, string shipName, Color color, NetworkController newShip)
-	{
-		if (id % 2 == 0)
-		{
-			newShip.Init(id, movingArea1, color, shipName);
-			newShip.transform.position = movingArea1.bounds.center;
-		}
-		else
-		{
-			newShip.Init(id, movingArea2, color, shipName);
-			newShip.transform.position = movingArea2.bounds.center;
-			newShip.transform.rotation = Quaternion.Euler(0, 0, 180);
-		}
-	}
+//	void SetupShipPosition(int id, string shipName, Color color, NetworkController newShip)
+//	{
+//		if (id % 2 == 0)
+//		{
+//			newShip.Init(id, movingArea1, color, shipName);
+//			newShip.transform.position = movingArea1.bounds.center;
+//		}
+//		else
+//		{
+//			newShip.Init(id, movingArea2, color, shipName);
+//			newShip.transform.position = movingArea2.bounds.center;
+//			newShip.transform.rotation = Quaternion.Euler(0, 0, 180);
+//		}
+//	}
 
 	public void ShowSmallQuitButton()
 	{

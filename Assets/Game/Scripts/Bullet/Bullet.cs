@@ -10,6 +10,7 @@ public class Bullet : MonoBehaviour
 
 	[SerializeField] HitEffect hitEffectPrefab;
 	[SerializeField] MeshRenderer meshRenderer;
+	[SerializeField] AudioSource audioSource;
 	bool used = false;
 
 	public Vector2 speed { get; private set; }
@@ -25,6 +26,13 @@ public class Bullet : MonoBehaviour
 	void Awake()
 	{
 		bulletRigidbody = GetComponent<Rigidbody2D>();
+		if (audioSource != null)
+		{
+			if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex == 0)
+			{
+				audioSource.volume = 0;
+			}
+		}
 	}
 
 	public void Init(Vector2 speed, Material material, ShipController owner)

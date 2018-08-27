@@ -33,16 +33,23 @@ public class AutoAimBullet : MonoBehaviour
 			enemy = GameManager.Instance.GetEnemyShip(owner);
 		}
 
-		if (enemy != null)
+		try
 		{
-			Vector3 enemyPos = new Vector3(enemy.position.x, 0, enemy.position.y);
-			if (invert)
+			if (enemy != null)
 			{
-				enemyPos.z = -enemyPos.z;
+				Vector3 enemyPos = new Vector3(enemy.position.x, 0, enemy.position.y);
+				if (invert)
+				{
+					enemyPos.z = -enemyPos.z;
+				}
+				rigid.transform.LookAt(enemyPos, point);
+				rigid.transform.localRotation = Quaternion.Euler(0, 0, rigid.transform.localRotation.eulerAngles.z);
+				rigid.velocity = Vector2.Lerp(rigid.velocity, new Vector2(rigid.transform.up.x, rigid.transform.up.y) * speed, Time.deltaTime * rotationSpeed);
 			}
-			rigid.transform.LookAt(enemyPos, point);
-			rigid.transform.localRotation = Quaternion.Euler(0, 0, rigid.transform.localRotation.eulerAngles.z);
-			rigid.velocity = Vector2.Lerp(rigid.velocity, new Vector2(rigid.transform.up.x, rigid.transform.up.y) * speed, Time.deltaTime * rotationSpeed);
+		}
+		catch (System.Exception ex)
+		{
+			bullet.Destroy();
 		}
 	}
 }

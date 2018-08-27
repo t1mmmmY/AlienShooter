@@ -121,7 +121,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4797639732459966}
-  - component: {fileID: 114179183251518722}
   - component: {fileID: 114360947159644486}
   - component: {fileID: 114789231861275180}
   - component: {fileID: 114358958746653642}
@@ -793,25 +792,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1303078821719658}
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &114179183251518722
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1452153129699450}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33cd7463865024898971f9e734e03e8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  movingArea: {fileID: 0}
-  hitEffectPrefab: {fileID: 114386220705050136, guid: d065a0f41ca434fc19c22a438d0047da,
-    type: 2}
-  healthBar: {fileID: 114630728633090422, guid: 814cecc0f5e4e4257975adf95d71a074,
-    type: 2}
-  baseMaterial: {fileID: 2100000, guid: 0e8efec36d8d84b76af966e9175ea638, type: 2}
-  color: {r: 0.37687626, g: 1, b: 0.29411763, a: 1}
-  shipSpeed: 2
 --- !u!114 &114358958746653642
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -888,6 +868,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f2851e7921e045e5920bff2b5e5ba9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movingArea: {fileID: 0}
+  hitEffectPrefab: {fileID: 114386220705050136, guid: d065a0f41ca434fc19c22a438d0047da,
+    type: 2}
+  healthBar: {fileID: 114630728633090422}
+  baseMaterial: {fileID: 2100000, guid: 0e8efec36d8d84b76af966e9175ea638, type: 2}
+  color: {r: 0.37687626, g: 1, b: 0.29411763, a: 1}
+  shipSpeed: 2
 --- !u!114 &114630728633090422
 MonoBehaviour:
   m_ObjectHideFlags: 1

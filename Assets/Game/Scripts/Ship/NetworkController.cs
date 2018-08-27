@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NetworkController : Photon.MonoBehaviour, IPunObservable 
+public class NetworkController : UserController, IPunObservable 
 {
 	ShipController shipController;
 

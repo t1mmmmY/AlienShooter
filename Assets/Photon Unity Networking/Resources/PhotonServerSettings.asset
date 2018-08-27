@@ -14,7 +14,7 @@ MonoBehaviour:
   AppID: b657bc74-1037-487f-a7ed-20c24e60ec94
   VoiceAppID: 
   ChatAppID: 
-  HostType: 1
+  HostType: 4
   PreferredRegion: 0
   EnabledRegions: -1
   Protocol: 0
@@ -32,14 +32,14 @@ MonoBehaviour:
   - DestroyRpc
   - DoJump
   - Flash
-  - HitRPC
   - InstantiateRpc
+  - MultInit
   - PickupItemInit
   - PunPickup
   - PunPickupSimple
   - PunRespawn
   - RequestForPickupItems
   - RequestForPickupTimes
-  - Setup
-  - Shoot
+  - MultStartGame
+  - MultHit
   DisableAutoOpenWizard: 1

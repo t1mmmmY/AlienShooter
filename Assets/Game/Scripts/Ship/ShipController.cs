@@ -1,8 +1,8 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShipController : MonoBehaviour, IShip 
+public class ShipController : Photon.MonoBehaviour, IShip 
 {
 	[SerializeField] protected BoxCollider2D movingArea;
 	[SerializeField] HitEffect hitEffectPrefab;
@@ -229,6 +229,30 @@ public class ShipController : MonoBehaviour, IShip
 		this.playerNumber = playerNumber;
 		this.movingArea = movingArea;
 
+		if (Synchronisator.Instance.gameType != GameType.Multiplayer)
+		{
+			if (shipName != "")
+			{
+				CreateShip(shipName);
+			}
+			else
+			{
+				InitShipMesh();
+			}
+			SetColor(color);
+		}
+		else
+		{
+//			photonView.RPC("MultInit", PhotonTargets.All);
+			photonView.RPC("MultInit", PhotonTargets.All, new Vector3(color.r, color.g, color.b), shipName);
+		}
+	}
+
+	[PunRPC]
+	public void MultInit(Vector3 color, string shipName)
+	{
+//		string shipName = "Ship1";
+//		Vector3 color = new Vector3(0, 1, 0);
 		if (shipName != "")
 		{
 			CreateShip(shipName);
@@ -237,7 +261,7 @@ public class ShipController : MonoBehaviour, IShip
 		{
 			InitShipMesh();
 		}
-		SetColor(color);
+		SetColor(new Color(color.x, color.y, color.z));
 	}
 
 	void CreateShip(string shipName)
@@ -269,11 +293,26 @@ public class ShipController : MonoBehaviour, IShip
 
 	public void StartGame()
 	{
+		if (Synchronisator.Instance.gameType != GameType.Multiplayer)
+		{
+			playingGame = true;
+			BulletsManager.StartGame();
+			StartCoroutine(ShootLoop(false));
+			StartCoroutine(ShootLoop(true));
+		}
+		else
+		{
+			photonView.RPC("MultStartGame", PhotonTargets.All);
+		}
+	}
+
+	[PunRPC]
+	public void MultStartGame()
+	{
 		playingGame = true;
 		BulletsManager.StartGame();
 		StartCoroutine(ShootLoop(false));
 		StartCoroutine(ShootLoop(true));
-//		StartCoroutine("SpecialShootLoop");
 	}
 
 	protected virtual void EndGame()
@@ -361,8 +400,30 @@ public class ShipController : MonoBehaviour, IShip
 				Die();
 			}
 		}
+
+		if (Synchronisator.Instance.gameType == GameType.Multiplayer)
+		{
+			photonView.RPC("MultHit", PhotonTargets.Others, position);
+		}
 	}
 
+	[PunRPC]
+	public void MultHit(Vector3 position)
+	{
+		HitEffect hitEffect = GameObject.Instantiate<HitEffect>(hitEffectPrefab, position, Quaternion.identity, this.transform);
+		hitEffect.Init(color);
+
+		if (health > 0)
+		{
+			health--;
+			healthBar.SetHealth(health);
+
+			if (health == 0)
+			{
+				Die();
+			}
+		}
+	}
 
 	protected void Die()
 	{
@@ -400,6 +461,7 @@ public class ShipController : MonoBehaviour, IShip
 		yield return new WaitForSeconds(2.0f);
 
 		EndGame();
+		Destroy(this.gameObject);
 	}
 
 }

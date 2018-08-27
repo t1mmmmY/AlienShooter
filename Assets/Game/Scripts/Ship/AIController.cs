@@ -16,7 +16,7 @@ public class AIController : ShipController
 		base.Start();
 	}
 
-	protected override void EndGame()
+	protected override void EndGame(IShip looser)
 	{
 //		GameManager.Instance.NextEnemy();
 //		base.EndGame();

@@ -69,7 +69,8 @@ public class GameManager : MonoBehaviour
 	{
 		if (Synchronisator.Instance.gameType == GameType.Multiplayer)
 		{
-			Quit();
+			NetworkHelper.Instance.JoinRoom();
+//			Quit();
 		}
 		else
 		{

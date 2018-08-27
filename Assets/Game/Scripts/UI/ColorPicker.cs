@@ -48,6 +48,16 @@ public class ColorPicker : MonoBehaviour
 	public void SelectColor(ColorButton colorButton)
 	{
 		selectedColor = colorButton.color;
+
+		if (shipId == 0)
+		{
+			Synchronisator.Instance.shipColor1 = selectedColor;
+		}
+		else if (shipId == 1)
+		{
+			Synchronisator.Instance.shipColor2 = selectedColor;
+		}
+
 		for (int i = 0; i < allColors.Count; i++)
 		{
 			allColors[i].Select(allColors[i] == colorButton);
@@ -59,14 +69,5 @@ public class ColorPicker : MonoBehaviour
 		}
 
 		shipSelection.SetColor(selectedColor);
-
-		if (shipId == 0)
-		{
-			Synchronisator.Instance.shipColor1 = selectedColor;
-		}
-		else if (shipId == 1)
-		{
-			Synchronisator.Instance.shipColor2 = selectedColor;
-		}
 	}
 }

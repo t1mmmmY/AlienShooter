@@ -16,6 +16,7 @@ public class MainMenu : MonoBehaviour
 	[SerializeField] GameObject player2Selection;
 
 	[SerializeField] SelectShipButton[] selectShipButtons;
+	[SerializeField] Text gameModeDescription;
 
 	bool player1Ready = false;
 	bool player2Ready = false;
@@ -30,16 +31,19 @@ public class MainMenu : MonoBehaviour
 	public void SelectPvP()
 	{
 		Synchronisator.Instance.gameType = GameType.LocalMultiplayer;
+		gameModeDescription.text = "VS Friend";
 	}
 
 	public void SelectAI()
 	{
 		Synchronisator.Instance.gameType = GameType.WithAI;
+		gameModeDescription.text = "VS Bot";
 	}
 
 	public void SelectMultiplayer()
 	{
 		Synchronisator.Instance.gameType = GameType.Multiplayer;
+		gameModeDescription.text = "Multiplayer";
 	}
 
 	public void GoToShipScreen()

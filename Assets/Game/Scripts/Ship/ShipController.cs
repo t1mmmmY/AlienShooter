@@ -334,8 +334,13 @@ public class ShipController : Photon.MonoBehaviour, IShip
 		StartCoroutine(ShootLoop(true));
 	}
 
-	protected virtual void EndGame()
+	protected virtual void EndGame(IShip looser)
 	{
+		if (Synchronisator.Instance.gameType == GameType.Multiplayer)
+		{
+			Synchronisator.Instance.UnlockShip(looser.shipNumber);
+		}
+
 		playingGame = false;
 		GameManager.Instance.EndGame();
 	}
@@ -344,10 +349,13 @@ public class ShipController : Photon.MonoBehaviour, IShip
 	{
 		if (playingGame)
 		{
-			transform.Translate(direction);
-			if (!movingArea.bounds.Contains(transform.position))
+			if (movingArea != null)
 			{
-				transform.position = movingArea.bounds.ClosestPoint(transform.position);
+				transform.Translate(direction);
+				if (!movingArea.bounds.Contains(transform.position))
+				{
+					transform.position = movingArea.bounds.ClosestPoint(transform.position);
+				}
 			}
 		}
 	}
@@ -479,7 +487,7 @@ public class ShipController : Photon.MonoBehaviour, IShip
 
 		yield return new WaitForSeconds(2.0f);
 
-		EndGame();
+		EndGame(this);
 		Destroy(this.gameObject);
 	}
 

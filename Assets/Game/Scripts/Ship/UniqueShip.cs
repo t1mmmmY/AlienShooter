@@ -10,6 +10,7 @@ public enum FireMode
 
 public class UniqueShip : MonoBehaviour 
 {
+	[SerializeField] int _shipNumber = 0;
 	[SerializeField] FireMode _fireMode = FireMode.Burst;
 	[SerializeField] FireMode _specialFireMode = FireMode.Burst;
 	[SerializeField] float _bulletSpeed = 25.0f;
@@ -23,6 +24,18 @@ public class UniqueShip : MonoBehaviour
 
 	[SerializeField] Transform[] _shootPoints;
 	[SerializeField] Transform[] _specialShootPoints;
+
+	public int shipNumber
+	{
+		get
+		{
+			return _shipNumber;
+		}
+		set
+		{
+			_shipNumber = value;
+		}
+	}
 
 	public FireMode fireMode
 	{

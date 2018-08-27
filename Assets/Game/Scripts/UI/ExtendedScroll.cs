@@ -7,15 +7,77 @@ public class ExtendedScroll : MonoBehaviour
 {
 	[SerializeField] ScrollRect scrollRect;
 	[SerializeField] MainMenu mainMenu;
+	[SerializeField] ColorElements colorElements;
+
+	[SerializeField] Text lockedLabel;
+	[SerializeField] Button playButton;
+	[SerializeField] Image playButtonImage;
+	[SerializeField] Text playButtonText;
+	[SerializeField] Color disabledColor;
+	[SerializeField] SelectShipButton selectShipButton;
 
 	int numberOfItems = 2;
+	int _currentNumber = 0;
 
-	public int currentNumber { get; private set; }
+	public int currentNumber 
+	{ 
+		get
+		{
+			return _currentNumber;
+		}
+		private set 
+		{ 
+			_currentNumber = value;
+			SetLock();
+		}
+	}
 
 	void Start()
 	{
 		currentNumber = 0;
 		numberOfItems = mainMenu.GetShipCount();
+		colorElements.onSetColor += OnSetColor;
+	}
+
+	public void ResetButton()
+	{
+		SetLock();
+	}
+
+//	void OnEnable()
+//	{
+//		SetLock();
+//	}
+
+	void SetLock()
+	{
+		if (Synchronisator.Instance == null)
+		{
+			return;
+		}
+		bool shipLocked = Synchronisator.Instance.IsShipLocked(_currentNumber);
+
+		lockedLabel.gameObject.SetActive(shipLocked);
+		playButton.interactable = !shipLocked;
+
+		if (!selectShipButton.isShipSelected)
+		{
+			playButtonImage.color = shipLocked ? disabledColor : Synchronisator.Instance.shipColor1;
+			playButtonText.color = shipLocked ? disabledColor : Synchronisator.Instance.shipColor1;
+			playButtonText.text = shipLocked ? "LOCKED" : "START";
+		}
+	}
+
+	void OnDestroy()
+	{
+		colorElements.onSetColor -= OnSetColor;
+	}
+
+	void OnSetColor(Color color)
+	{
+		bool shipLocked = Synchronisator.Instance.IsShipLocked(_currentNumber);
+		playButtonImage.color = shipLocked ? disabledColor : Synchronisator.Instance.shipColor1;
+		playButtonText.color = shipLocked ? disabledColor : Synchronisator.Instance.shipColor1;
 	}
 
 	public void OnValueChanged(Vector2 value)

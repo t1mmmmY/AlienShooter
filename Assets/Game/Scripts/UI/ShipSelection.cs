@@ -11,19 +11,28 @@ public class ShipSelection : MonoBehaviour
 
 	void Awake()
 	{
-		foreach (string shipName in shipsVariation.shipNames)
+		for (int i = 0; i < shipsVariation.shipNames.Length; i++)
 		{
 			ShipPreview shipPreview = GameObject.Instantiate<ShipPreview>(shipPreviewPrefab, content);
-			shipPreview.CreateShipPreview(shipName);
+			shipPreview.CreateShipPreview(shipsVariation.shipNames[i]);
 			allShips.Add(shipPreview);
+
+			if (Synchronisator.Instance.IsShipLocked(i))
+			{
+				shipPreview.ShipLocked();
+				shipPreview.SetColor(Color.black);
+			}
 		}
 	}
 
 	public void SetColor(Color color)
 	{
-		foreach (ShipPreview ship in allShips)
+		for (int i = 0; i < allShips.Count; i++)
 		{
-			ship.SetColor(color);
+			if (!Synchronisator.Instance.IsShipLocked(i))
+			{
+				allShips[i].SetColor(color);
+			}
 		}
 	}
 

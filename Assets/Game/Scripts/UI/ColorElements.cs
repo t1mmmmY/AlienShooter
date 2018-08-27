@@ -8,6 +8,8 @@ public class ColorElements : MonoBehaviour
 	[SerializeField] Text[] texts;
 	[SerializeField] Image[] images;
 
+	public System.Action<Color> onSetColor;
+
 	void Start()
 	{
 		SetColor(Synchronisator.Instance.shipColor1);
@@ -29,6 +31,11 @@ public class ColorElements : MonoBehaviour
 			{
 				image.color = color;
 			}
+		}
+
+		if (onSetColor != null)
+		{
+			onSetColor(color);
 		}
 	}
 }

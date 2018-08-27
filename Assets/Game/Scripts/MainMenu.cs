@@ -56,6 +56,8 @@ public class MainMenu : MonoBehaviour
 		{
 			selectButton.ResetButton();
 		}
+		shipScroll1.ResetButton();
+		shipScroll2.ResetButton();
 	}
 
 	public void GoToModesScreen()

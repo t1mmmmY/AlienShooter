@@ -17,6 +17,24 @@ public class ShipController : Photon.MonoBehaviour, IShip
 
 	public int playerNumber { get; set; }
 
+	public int shipNumber
+	{
+		get
+		{
+			if (shipMesh != null)
+			{
+				return shipMesh.shipNumber;
+			}
+			else
+			{
+				return 0;
+			}
+		}
+		set
+		{
+		}
+	}
+
 	protected FireMode fireMode
 	{
 		get
@@ -277,10 +295,11 @@ public class ShipController : Photon.MonoBehaviour, IShip
 
 	public void SetColor(Color color)
 	{
-		if (color != Color.black)
-		{
-			this.color = color;
-		}
+		this.color = color;
+//		if (color != Color.black)
+//		{
+//			this.color = color;
+//		}
 
 		newMaterial = new Material(baseMaterial);
 		newMaterial.color = this.color;

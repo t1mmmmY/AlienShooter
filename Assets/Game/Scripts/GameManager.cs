@@ -79,6 +79,7 @@ public class GameManager : MonoBehaviour
 
 	public void NextEnemy(IShip oldShip)
 	{
+		Synchronisator.Instance.UnlockShip(oldShip.shipNumber);
 		if (shipControllers.Contains(oldShip))
 		{
 			shipControllers.Remove(oldShip);

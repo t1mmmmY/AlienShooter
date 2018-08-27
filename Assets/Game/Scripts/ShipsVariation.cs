@@ -15,11 +15,19 @@ public class ShipsVariation : ScriptableObject
 			selectedColor = shipColors[Random.Range(0, shipColors.Length)];
 		} while (selectedColor == exclusion);
 		return selectedColor;
-//		return shipColors[Random.Range(0, shipColors.Length)];
 	}
 
 	public string GetRandomShip()
 	{
+		for (int i = 0; i < shipNames.Length; i++)
+		{
+			if (Synchronisator.Instance.IsShipLocked(i))
+			{
+				//First locked ship
+				return shipNames[i];
+			}
+		}
+		//All ships unlocked
 		return shipNames[Random.Range(0, shipNames.Length)];
 	}
 }

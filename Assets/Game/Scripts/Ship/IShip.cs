@@ -4,6 +4,7 @@ using UnityEngine;
 
 public interface IShip
 {
+	int shipNumber { get; set; }
 	Vector2 position { get; }
 	int playerNumber { get; set; }
 	void StartGame();

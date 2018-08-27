@@ -8,6 +8,7 @@ public class ShipPreview : ShipController
 
 	Coroutine shootCoroutine;
 	Coroutine specialShootCoroutine;
+	bool shipLocked = false;
 
 	public void CreateShipPreview(string shipName)
 	{
@@ -22,6 +23,10 @@ public class ShipPreview : ShipController
 		}
 	}
 
+	public void ShipLocked()
+	{
+		shipLocked = true;
+	}
 
 	void OnEnable()
 	{
@@ -49,6 +54,11 @@ public class ShipPreview : ShipController
 
 	protected void ShootPreview(Transform shootPoint, bool special)
 	{
+		if (shipLocked)
+		{
+			return;
+		}
+
 		Bullet prefab = special ? specialBulletPrefab : bulletPrefab;
 		float speed = special ? specialBulletSpeed : bulletSpeed;
 

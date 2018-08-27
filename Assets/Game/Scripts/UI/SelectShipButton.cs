@@ -14,12 +14,16 @@ public class SelectShipButton : MonoBehaviour
 	[SerializeField] Color normalColor = Color.green;
 	[SerializeField] Color pressedColor = Color.yellow;
 
+	public bool isShipSelected { get; private set; }
+
 	public void ResetButton()
 	{
 		normalColor = Synchronisator.Instance.shipColor1;
-		button.image.color = normalColor;
-		buttonLabel.color = normalColor;
-		buttonLabel.text = "START";
+		isShipSelected = false;
+//		button.image.color = normalColor;
+//		buttonLabel.color = normalColor;
+//
+//		buttonLabel.text = "START";
 	}
 
 	public void ShipSelected()
@@ -36,5 +40,6 @@ public class SelectShipButton : MonoBehaviour
 		button.image.color = pressedColor;
 		buttonLabel.color = pressedColor;
 		buttonLabel.text = "WAITING";
+		isShipSelected = true;
 	}
 }

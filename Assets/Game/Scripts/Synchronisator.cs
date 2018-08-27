@@ -20,6 +20,20 @@ public class Synchronisator : MonoBehaviour
 	public string shipName1;
 	public string shipName2;
 
+	public bool IsShipLocked(int index)
+	{
+		if (index == 0)
+		{
+			PlayerPrefs.SetInt(string.Format("Ship{0}Unlocked", index), 1);
+		}
+		return PlayerPrefs.GetInt(string.Format("Ship{0}Unlocked", index), 0) == 0 ? true : false;
+	}
+
+	public void UnlockShip(int index)
+	{
+		PlayerPrefs.SetInt(string.Format("Ship{0}Unlocked", index), 1);
+	}
+
 	void Awake()
 	{
 		if (Synchronisator.Instance != null)

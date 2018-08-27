@@ -10296,6 +10296,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 988b12fd057af453ca17a2ec4c361a24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _shipNumber: 4
   _fireMode: 1
   _specialFireMode: 1
   _bulletSpeed: 25

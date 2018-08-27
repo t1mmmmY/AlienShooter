@@ -49,6 +49,8 @@ public class MainMenu : MonoBehaviour
 		player1Selection.SetActive(true);
 		player2Selection.SetActive(Synchronisator.Instance.gameType == GameType.LocalMultiplayer);
 		menuScroll.MoveTo(1);
+		player1Ready = false;
+		player2Ready = false;
 
 		foreach (SelectShipButton selectButton in selectShipButtons)
 		{
@@ -106,4 +108,8 @@ public class MainMenu : MonoBehaviour
 		modeSelectionPanel.SetActive(true);
 	}
 
+	public int GetShipCount()
+	{
+		return shipsVariation.shipNames.Length;
+	}
 }

@@ -6,14 +6,16 @@ using UnityEngine.UI;
 public class ExtendedScroll : MonoBehaviour
 {
 	[SerializeField] ScrollRect scrollRect;
+	[SerializeField] MainMenu mainMenu;
 
-	public int numberOfItems = 2;
+	int numberOfItems = 2;
 
 	public int currentNumber { get; private set; }
 
 	void Start()
 	{
 		currentNumber = 0;
+		numberOfItems = mainMenu.GetShipCount();
 	}
 
 	public void OnValueChanged(Vector2 value)

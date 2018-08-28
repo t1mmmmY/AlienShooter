@@ -14,7 +14,7 @@ public class ShipPart : MonoBehaviour
 
 		if (shipController == null)
 		{
-			Debug.LogError("shipController == null");
+			Debug.LogWarning("shipController == null");
 		}
 	}
 

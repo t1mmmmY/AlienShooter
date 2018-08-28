@@ -74,12 +74,12 @@ public class MainMenu : MonoBehaviour
 		switch (Synchronisator.Instance.gameType)
 		{
 			case GameType.WithAI:
-				UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+				UnityEngine.SceneManagement.SceneManager.LoadScene(2);
 				break;
 			case GameType.LocalMultiplayer:
 				if (player1Ready && player2Ready)
 				{
-					UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+					UnityEngine.SceneManagement.SceneManager.LoadScene(2);
 				}
 				break;
 			case GameType.Multiplayer:
@@ -112,6 +112,8 @@ public class MainMenu : MonoBehaviour
 		NetworkHelper.Instance.StopMatchmaking();
 		waitingPanel.SetActive(false);
 		modeSelectionPanel.SetActive(true);
+
+		GoToShipScreen();
 	}
 
 	public int GetShipCount()

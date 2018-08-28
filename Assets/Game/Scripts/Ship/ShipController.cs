@@ -336,13 +336,13 @@ public class ShipController : Photon.MonoBehaviour, IShip
 
 	protected virtual void EndGame(IShip looser)
 	{
-		if (Synchronisator.Instance.gameType == GameType.Multiplayer)
-		{
-			Synchronisator.Instance.UnlockShip(looser.shipNumber);
-		}
+//		if (Synchronisator.Instance.gameType == GameType.Multiplayer)
+//		{
+//			Synchronisator.Instance.UnlockShip(looser.shipNumber);
+//		}
 
 		playingGame = false;
-		GameManager.Instance.EndGame();
+//		GameManager.Instance.EndGame();
 	}
 
 	protected void Move(Vector2 direction)
@@ -458,19 +458,56 @@ public class ShipController : Photon.MonoBehaviour, IShip
 		StartCoroutine("DieEffect");
 	}
 
+	void ShowEndGameScreen()
+	{
+		switch (Synchronisator.Instance.gameType)
+		{
+			case GameType.WithAI:
+				if (playerNumber == 0)
+				{
+					//Player dead
+					GameManager.Instance.ShowEndGameScreen(EndGameScreenType.LooseAI);
+				}
+				else
+				{
+					//Enemy AI dead
+					GameManager.Instance.ShowEndGameScreen(EndGameScreenType.WinAI);
+					Synchronisator.Instance.UnlockShip(this.shipNumber);
+				}
+				break;
+			case GameType.LocalMultiplayer:
+				if (playerNumber == 0)
+				{
+					//Player dead
+					GameManager.Instance.ShowEndGameScreen(EndGameScreenType.Player2Win);
+				}
+				else
+				{
+					//Enemy dead
+					GameManager.Instance.ShowEndGameScreen(EndGameScreenType.Player1Win);
+				}
+				break;
+			case GameType.Multiplayer:
+				if (playerNumber == PhotonNetwork.player.ID - 1)
+				{
+					//Player dead
+					GameManager.Instance.ShowEndGameScreen(EndGameScreenType.LooseMultiplayer);
+				}
+				else
+				{
+					//Enemy dead
+					GameManager.Instance.ShowEndGameScreen(EndGameScreenType.WinMultiplayer);
+					Synchronisator.Instance.UnlockShip(this.shipNumber);
+				}
+				break;
+		}
+
+		EndGame(this);
+	}
+
 	IEnumerator DieEffect()
 	{
-		if (Synchronisator.Instance.gameType != GameType.WithAI)
-		{
-			GameManager.Instance.ShowQuitButton();
-		}
-		else
-		{
-			if (playerNumber != 0)
-			{
-				GameManager.Instance.NextEnemy(this);
-			}
-		}
+		ShowEndGameScreen();
 
 		ShipPart[] shipParts = GetComponentsInChildren<ShipPart>();
 		healthBar.gameObject.SetActive(false);
@@ -487,8 +524,6 @@ public class ShipController : Photon.MonoBehaviour, IShip
 
 		yield return new WaitForSeconds(2.0f);
 
-		EndGame(this);
-		Destroy(this.gameObject);
 	}
 
 }

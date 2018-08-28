@@ -8,7 +8,12 @@ public class Space : MonoBehaviour
 
 	[SerializeField] Transform stars1;
 	[SerializeField] Transform stars2;
-	
+
+	void Start()
+	{
+		DontDestroyOnLoad(this.gameObject);
+	}
+
 	void LateUpdate () 
 	{
 		if (userController != null)

@@ -3,6 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum EndGameScreenType
+{
+	WinAI,
+	LooseAI,
+	Player1Win,
+	Player2Win,
+	WinMultiplayer,
+	LooseMultiplayer
+}
+
 public class GameManager : MonoBehaviour 
 {
 	public static GameManager Instance;
@@ -14,6 +24,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] Button smallQuitButton;
 	[SerializeField] Button smallQuitButtonMiddle;
 	[SerializeField] ShipsVariation shipsVariation;
+	[SerializeField] EndGameScreen[] endGameScreens;
 
 	List<IShip> shipControllers;
 
@@ -65,22 +76,36 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	public void EndGame()
+//	public void EndGame()
+//	{
+//		if (Synchronisator.Instance.gameType == GameType.Multiplayer)
+//		{
+//			NetworkHelper.Instance.JoinRoom();
+////			Quit();
+//		}
+//		else
+//		{
+//			UnityEngine.SceneManagement.SceneManager.LoadScene(2);
+//		}
+//	}
+
+	public void RestartGame()
 	{
-		if (Synchronisator.Instance.gameType == GameType.Multiplayer)
-		{
-			NetworkHelper.Instance.JoinRoom();
-//			Quit();
-		}
-		else
-		{
-			UnityEngine.SceneManagement.SceneManager.LoadScene(1);
-		}
+		UnityEngine.SceneManagement.SceneManager.LoadScene(2);
+	}
+
+	public void RestartMultiplayerGame()
+	{
+		NetworkHelper.Instance.JoinRoom();
+	}
+
+	public void MultPlayerReady()
+	{
 	}
 
 	public void NextEnemy(IShip oldShip)
 	{
-		Synchronisator.Instance.UnlockShip(oldShip.shipNumber);
+//		Synchronisator.Instance.UnlockShip(oldShip.shipNumber);
 		if (shipControllers.Contains(oldShip))
 		{
 			shipControllers.Remove(oldShip);
@@ -192,13 +217,36 @@ public class GameManager : MonoBehaviour
 		quitButton.gameObject.SetActive(true);
 	}
 
+	public void ShowEndGameScreen(EndGameScreenType screenType)
+	{
+		GetScreen(screenType).SetActive(true);
+	}
+
 	public void Quit()
 	{
 		if (Synchronisator.Instance.gameType == GameType.Multiplayer)
 		{
 			NetworkHelper.Instance.StopMatchmaking();
 		}
-		UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+		UnityEngine.SceneManagement.SceneManager.LoadScene(1);
 	}
 
+	public GameObject GetScreen(EndGameScreenType screenType)
+	{
+		foreach (EndGameScreen screen in endGameScreens)
+		{
+			if (screen.screenType == screenType)
+			{
+				return screen.screen;
+			}
+		}
+		return null;
+	}
+}
+
+[System.Serializable]
+public class EndGameScreen
+{
+	public EndGameScreenType screenType;
+	public GameObject screen;
 }

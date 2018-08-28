@@ -9,7 +9,7 @@ public class TestShipManager : MonoBehaviour
 	void Start()
 	{
 		ShipController shipController = GameObject.FindObjectOfType<ShipController>();
-		shipController.Init(0, movingArea1, Color.black, "");
+		shipController.Init(0, movingArea1, Synchronisator.Instance.shipColor1, "");
 		shipController.StartGame();
 	}
 }

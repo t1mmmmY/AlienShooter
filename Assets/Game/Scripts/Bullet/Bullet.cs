@@ -28,7 +28,7 @@ public class Bullet : MonoBehaviour
 		bulletRigidbody = GetComponent<Rigidbody2D>();
 		if (audioSource != null)
 		{
-			if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex == 0)
+			if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex == 1)
 			{
 				audioSource.volume = 0;
 			}

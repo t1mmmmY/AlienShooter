@@ -9019,8 +9019,8 @@ MonoBehaviour:
   _specialFireMode: 1
   _bulletSpeed: 25
   _specialBulletSpeed: 25
-  _timeBetweenBullets: 0.2
-  _timeBetweenSpecialBullets: 0.2
+  _timeBetweenBullets: 0.225
+  _timeBetweenSpecialBullets: 0.225
   _shipWidth: 14
   _health: 20
   _bulletPrefab: {fileID: 114163134075301084, guid: a52bda9aafcc64c2ebeb791c62671e1f,

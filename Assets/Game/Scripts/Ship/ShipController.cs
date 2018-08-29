@@ -242,6 +242,11 @@ public class ShipController : Photon.MonoBehaviour, IShip
 	{
 	}
 
+	public ShipController GetShipController()
+	{
+		return this;
+	}
+
 	public void Init(int playerNumber, BoxCollider2D movingArea, Color color, string shipName)
 	{
 		this.playerNumber = playerNumber;
@@ -488,7 +493,8 @@ public class ShipController : Photon.MonoBehaviour, IShip
 				}
 				break;
 			case GameType.Multiplayer:
-				if (playerNumber == PhotonNetwork.player.ID - 1)
+//				if (playerNumber == PhotonNetwork.player.ID - 1)
+				if (photonView.isMine)
 				{
 					//Player dead
 					GameManager.Instance.ShowEndGameScreen(EndGameScreenType.LooseMultiplayer);

@@ -637,6 +637,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a55bc20ba66a7482f9211f7545822fab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scrollNumber: 0
   scrollRect: {fileID: 137457959}
   mainMenu: {fileID: 1553264278}
   colorElements: {fileID: 1553264280}
@@ -646,6 +647,7 @@ MonoBehaviour:
   playButtonText: {fileID: 1185586219}
   disabledColor: {r: 1, g: 0.78079355, b: 0, a: 1}
   selectShipButton: {fileID: 1138738293}
+  shipSelection: {fileID: 1143943535}
 --- !u!1 &153587461
 GameObject:
   m_ObjectHideFlags: 0
@@ -2792,7 +2794,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -0.00000046618862, y: -0.000061035156}
+  m_AnchoredPosition: {x: -0.00000046122275, y: -0.000061035156}
   m_SizeDelta: {x: 0, y: -0.000030517578}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1143943533
@@ -4460,6 +4462,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a55bc20ba66a7482f9211f7545822fab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scrollNumber: 1
   scrollRect: {fileID: 1748661231}
   mainMenu: {fileID: 1553264278}
   colorElements: {fileID: 1553264280}
@@ -4469,6 +4472,7 @@ MonoBehaviour:
   playButtonText: {fileID: 1229523235}
   disabledColor: {r: 1, g: 0.78079355, b: 0, a: 1}
   selectShipButton: {fileID: 136005184}
+  shipSelection: {fileID: 1991249028}
 --- !u!114 &1748661231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4922,7 +4926,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0.00000018601546, y: -0.000061035156}
+  m_AnchoredPosition: {x: 0.00000017111901, y: -0.000061035156}
   m_SizeDelta: {x: 0, y: -0.000030517578}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &2020661122

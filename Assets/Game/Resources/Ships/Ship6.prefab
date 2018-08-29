@@ -11005,9 +11005,7 @@ MonoBehaviour:
     type: 2}
   _specialBulletPrefab: {fileID: 114163134075301084, guid: e6bbe8379fe924e909e1651fb79b343e,
     type: 2}
-  _shootPoints:
-  - {fileID: 4841947009627052}
-  - {fileID: 4260156956847986}
+  _shootPoints: []
   _specialShootPoints:
   - {fileID: 4590995351223552}
   - {fileID: 4501555017939916}

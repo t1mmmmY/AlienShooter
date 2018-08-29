@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class ExtendedScroll : MonoBehaviour
 {
+	[SerializeField] int scrollNumber = 0;
 	[SerializeField] ScrollRect scrollRect;
 	[SerializeField] MainMenu mainMenu;
 	[SerializeField] ColorElements colorElements;
@@ -15,6 +16,7 @@ public class ExtendedScroll : MonoBehaviour
 	[SerializeField] Text playButtonText;
 	[SerializeField] Color disabledColor;
 	[SerializeField] SelectShipButton selectShipButton;
+	[SerializeField] ShipSelection shipSelection;
 
 	int numberOfItems = 2;
 	int _currentNumber = 0;
@@ -28,13 +30,15 @@ public class ExtendedScroll : MonoBehaviour
 		private set 
 		{ 
 			_currentNumber = value;
+			PlayerPrefs.SetInt("ShipNumber" + scrollNumber.ToString(), _currentNumber);
+			shipSelection.SelectShip(_currentNumber);
 			SetLock();
 		}
 	}
 
 	void Start()
 	{
-		currentNumber = 0;
+		currentNumber = PlayerPrefs.GetInt("ShipNumber" + scrollNumber.ToString(), 0);
 		numberOfItems = mainMenu.GetShipCount();
 		colorElements.onSetColor += OnSetColor;
 	}
@@ -44,10 +48,10 @@ public class ExtendedScroll : MonoBehaviour
 		SetLock();
 	}
 
-//	void OnEnable()
-//	{
-//		SetLock();
-//	}
+	void OnEnable()
+	{
+		StartCoroutine("MoveTo", (float)currentNumber / (numberOfItems-1));
+	}
 
 	void SetLock()
 	{

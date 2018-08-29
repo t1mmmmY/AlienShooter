@@ -9,4 +9,5 @@ public interface IShip
 	int playerNumber { get; set; }
 	void StartGame();
 	void Hit(Vector3 position);
+	ShipController GetShipController();
 }

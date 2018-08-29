@@ -10,7 +10,7 @@ public class MultiplayerEndScreen : MonoBehaviour
 	string timerText = "";
 	int timeLeft = 5;
 
-	void Start()
+	void OnEnable()
 	{
 		timerText = timerLabel.text;
 		StartCoroutine("Timer");
@@ -23,6 +23,7 @@ public class MultiplayerEndScreen : MonoBehaviour
 		{
 			yield return new WaitForSeconds(1);
 			timerLabel.text = timerText.Replace("<X>", timeLeft.ToString());
+			timeLeft--;
 		} while (timeLeft > 0);
 
 		GameManager.Instance.RestartMultiplayerGame();
@@ -31,5 +32,10 @@ public class MultiplayerEndScreen : MonoBehaviour
 	public void PlayerReady()
 	{
 		GameManager.Instance.MultPlayerReady();
+	}
+
+	public void RestartNow()
+	{
+		GameManager.Instance.RestartMultiplayerGame();
 	}
 }

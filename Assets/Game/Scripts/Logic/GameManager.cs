@@ -24,9 +24,12 @@ public class GameManager : MonoBehaviour
 	[SerializeField] Button smallQuitButton;
 	[SerializeField] Button smallQuitButtonMiddle;
 	[SerializeField] ShipsVariation shipsVariation;
+	[SerializeField] GameObject lostConnectionScreen;
+	[SerializeField] GameObject waitingPanel;
 	[SerializeField] EndGameScreen[] endGameScreens;
 
 	List<IShip> shipControllers;
+	bool endScreenEnabled = false;
 
 	void Awake()
 	{
@@ -38,6 +41,7 @@ public class GameManager : MonoBehaviour
 	{
 		quitButton.gameObject.SetActive(false);
 		PrepareGame(Synchronisator.Instance.gameType);
+		StartCoroutine("GameTimer");
 	}
 
 	void PrepareGame(GameType gameType)
@@ -96,6 +100,13 @@ public class GameManager : MonoBehaviour
 
 	public void RestartMultiplayerGame()
 	{
+		HideAllEndScreens();
+		lostConnectionScreen.SetActive(false);
+		for (int i = 0; i < shipControllers.Count; i++)
+		{
+			RemoveShip(shipControllers[i]);
+		}
+		waitingPanel.SetActive(true);
 		NetworkHelper.Instance.JoinRoom();
 	}
 
@@ -113,6 +124,15 @@ public class GameManager : MonoBehaviour
 		IShip newShip = CreateAI(1, shipsVariation.GetRandomShip(), shipsVariation.GetRandomColor(Synchronisator.Instance.shipColor1));
 		newShip.StartGame();
 		shipControllers.Add(newShip);
+	}
+
+	void RemoveShip(IShip ship)
+	{
+		if (shipControllers.Contains(ship))
+		{
+			shipControllers.Remove(ship);
+			Destroy(ship.GetShipController().gameObject);
+		}
 	}
 
 	public IShip GetEnemyShip(IShip currentShip)
@@ -219,7 +239,19 @@ public class GameManager : MonoBehaviour
 
 	public void ShowEndGameScreen(EndGameScreenType screenType)
 	{
+		if (endScreenEnabled)
+		{
+			return;
+		}
 		GetScreen(screenType).SetActive(true);
+		endScreenEnabled = true;
+	}
+
+	void ShowLostConnectionScreen()
+	{
+		HideAllEndScreens();
+		lostConnectionScreen.SetActive(true);
+		endScreenEnabled = true;
 	}
 
 	public void Quit()
@@ -231,7 +263,27 @@ public class GameManager : MonoBehaviour
 		UnityEngine.SceneManagement.SceneManager.LoadScene(1);
 	}
 
-	public GameObject GetScreen(EndGameScreenType screenType)
+	IEnumerator GameTimer()
+	{
+		do
+		{
+			yield return new WaitForSeconds(1);
+
+			if (Synchronisator.Instance.gameType == GameType.Multiplayer)
+			{
+				if (PhotonNetwork.playerList.Length < 2 || Application.internetReachability == NetworkReachability.NotReachable)
+				{
+					if (!waitingPanel.activeSelf)
+					{
+						ShowLostConnectionScreen();
+					}
+				}
+			}
+
+		} while (true);
+	}
+
+	GameObject GetScreen(EndGameScreenType screenType)
 	{
 		foreach (EndGameScreen screen in endGameScreens)
 		{
@@ -241,6 +293,14 @@ public class GameManager : MonoBehaviour
 			}
 		}
 		return null;
+	}
+
+	void HideAllEndScreens()
+	{
+		foreach (EndGameScreen screen in endGameScreens)
+		{
+			screen.screen.SetActive(false);
+		}
 	}
 }
 

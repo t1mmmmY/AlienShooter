@@ -9,6 +9,7 @@ public class ShipPreview : ShipController
 	Coroutine shootCoroutine;
 	Coroutine specialShootCoroutine;
 	bool shipLocked = false;
+	public bool shipSelected = false;
 
 	public void CreateShipPreview(string shipName)
 	{
@@ -54,7 +55,7 @@ public class ShipPreview : ShipController
 
 	protected void ShootPreview(Transform shootPoint, bool special)
 	{
-		if (shipLocked)
+		if (shipLocked || !shipSelected)
 		{
 			return;
 		}

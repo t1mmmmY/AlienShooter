@@ -36,4 +36,12 @@ public class ShipSelection : MonoBehaviour
 		}
 	}
 
+	public void SelectShip(int index)
+	{
+		for (int i = 0; i < allShips.Count; i++)
+		{
+			allShips[i].shipSelected = index == i;
+		}
+	}
+
 }

@@ -36,6 +36,11 @@ public class ShipPart : MonoBehaviour
 	public void Hit(bool forceDestroy = false)
 	{
 //		Debug.Log(this.gameObject.name + " Destroy");
+		if (shipController == null)
+		{
+			return;
+		}
+
 		shipController.Hit(this.transform.position);
 		if (!undestructible || forceDestroy)
 		{

@@ -31,6 +31,18 @@ public class GameManager : MonoBehaviour
 	List<IShip> shipControllers;
 	bool endScreenEnabled = false;
 
+	int numberOfRestarts
+	{
+		get
+		{
+			return PlayerPrefs.GetInt("NumberOfRestarts", 0);
+		}
+		set
+		{
+			PlayerPrefs.SetInt("NumberOfRestarts", value);
+		}
+	}
+
 	void Awake()
 	{
 		Instance = this;
@@ -80,22 +92,21 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-//	public void EndGame()
-//	{
-//		if (Synchronisator.Instance.gameType == GameType.Multiplayer)
-//		{
-//			NetworkHelper.Instance.JoinRoom();
-////			Quit();
-//		}
-//		else
-//		{
-//			UnityEngine.SceneManagement.SceneManager.LoadScene(2);
-//		}
-//	}
-
 	public void RestartGame()
 	{
-		UnityEngine.SceneManagement.SceneManager.LoadScene(2);
+		numberOfRestarts++;
+		if (numberOfRestarts >= AdvertisingManager.Instance.adFrequency)
+		{
+			AdvertisingManager.Instance.ShowFullScreenAd(() =>
+				{
+					UnityEngine.SceneManagement.SceneManager.LoadScene(2);
+				});
+			numberOfRestarts = 0;
+		}
+		else
+		{
+			UnityEngine.SceneManagement.SceneManager.LoadScene(2);
+		}
 	}
 
 	public void RestartMultiplayerGame()
@@ -260,7 +271,20 @@ public class GameManager : MonoBehaviour
 		{
 			NetworkHelper.Instance.StopMatchmaking();
 		}
-		UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+
+		numberOfRestarts++;
+		if (numberOfRestarts >= AdvertisingManager.Instance.adFrequency)
+		{
+			AdvertisingManager.Instance.ShowFullScreenAd(() =>
+				{
+					UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+				});
+			numberOfRestarts = 0;
+		}
+		else
+		{
+			UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+		}
 	}
 
 	IEnumerator GameTimer()

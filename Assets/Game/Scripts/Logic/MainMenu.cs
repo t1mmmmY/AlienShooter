@@ -26,6 +26,11 @@ public class MainMenu : MonoBehaviour
 		Application.targetFrameRate = 30;
 		player1Selection.SetActive(false);
 		player2Selection.SetActive(false);
+
+		AdvertisingManager.Instance.ShowBanner(() =>
+			{
+				AdvertisingManager.Instance.HideBanner();
+			});
 	}
 
 	public void SelectPvP()
@@ -62,15 +67,33 @@ public class MainMenu : MonoBehaviour
 		}
 		shipScroll1.ResetButton();
 		shipScroll2.ResetButton();
+
+		if (Synchronisator.Instance.gameType == GameType.LocalMultiplayer)
+		{
+			AdvertisingManager.Instance.HideBanner();
+		}
+		else
+		{
+			AdvertisingManager.Instance.ShowBanner(() =>
+				{
+					AdvertisingManager.Instance.HideBanner();
+				});
+		}
 	}
 
 	public void GoToModesScreen()
 	{
 		menuScroll.MoveTo(0);
+		AdvertisingManager.Instance.ShowBanner(() =>
+			{
+				AdvertisingManager.Instance.HideBanner();
+			});
 	}
 
 	public void StartGame()
 	{
+		AdvertisingManager.Instance.HideBanner();
+
 		switch (Synchronisator.Instance.gameType)
 		{
 			case GameType.WithAI:

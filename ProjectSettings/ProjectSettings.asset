@@ -161,7 +161,7 @@ PlayerSettings:
     Android: com.BigHat.SpacePilot
     Standalone: com.BigHat.AlienShooter
   buildNumber: {}
-  AndroidBundleVersionCode: 1
+  AndroidBundleVersionCode: 3
   AndroidMinSdkVersion: 16
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 2

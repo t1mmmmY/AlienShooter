@@ -7,7 +7,26 @@ public class AdvertisingManager : BaseSingleton<AdvertisingManager>
 {
 	public int adFrequency { get; private set; }
 	int defaultAdFrequency = 1;
-	
+
+	System.Action onShowVideo;
+	System.Action onShowBanner;
+
+	public bool isVideoReady
+	{
+		get
+		{
+			return Advertisement.IsReady("rewardedVideo");
+		}
+	}
+
+	public bool isFullScreenBannerReady
+	{
+		get
+		{
+			return Advertisement.IsReady("fullscreenbanner");
+		}
+	}
+
 	void Start()
 	{
 		adFrequency = defaultAdFrequency;
@@ -32,6 +51,7 @@ public class AdvertisingManager : BaseSingleton<AdvertisingManager>
 	{
 		if (Advertisement.IsReady("fullscreenbanner"))
 		{
+			onShowBanner = onCloseAd;
 			var options = new ShowOptions { resultCallback = HandleBannerResult };
 			Advertisement.Show("fullscreenbanner", options);
 		}
@@ -39,10 +59,11 @@ public class AdvertisingManager : BaseSingleton<AdvertisingManager>
 
 	public void ShowVideo(System.Action onCloseAd)
 	{
-		if (Advertisement.IsReady("video"))
+		if (Advertisement.IsReady("rewardedVideo"))
 		{
+			onShowVideo = onCloseAd;
 			var options = new ShowOptions { resultCallback = HandleVideoResult };
-			Advertisement.Show("video", options);
+			Advertisement.Show("rewardedVideo", options);
 		}
 	}
 
@@ -52,12 +73,17 @@ public class AdvertisingManager : BaseSingleton<AdvertisingManager>
 		{
 			case ShowResult.Finished:
 				Debug.Log("The ad was successfully shown.");
-				//
-				// YOUR CODE TO REWARD THE GAMER
-				// Give coins etc.
+				if (onShowBanner != null)
+				{
+					onShowBanner();
+				}
 				break;
 			case ShowResult.Skipped:
 				Debug.Log("The ad was skipped before reaching the end.");
+				if (onShowBanner != null)
+				{
+					onShowBanner();
+				}
 				break;
 			case ShowResult.Failed:
 				Debug.LogError("The ad failed to be shown.");
@@ -71,12 +97,17 @@ public class AdvertisingManager : BaseSingleton<AdvertisingManager>
 		{
 			case ShowResult.Finished:
 				Debug.Log("The video was successfully shown.");
-				//
-				// YOUR CODE TO REWARD THE GAMER
-				// Give coins etc.
+				if (onShowVideo != null)
+				{
+					onShowVideo();
+				}
 				break;
 			case ShowResult.Skipped:
 				Debug.Log("The video was skipped before reaching the end.");
+				if (onShowVideo != null)
+				{
+					onShowVideo();
+				}
 				break;
 			case ShowResult.Failed:
 				Debug.LogError("The video failed to be shown.");

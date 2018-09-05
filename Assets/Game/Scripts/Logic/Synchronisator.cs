@@ -20,6 +20,18 @@ public class Synchronisator : MonoBehaviour
 	public string shipName1;
 	public string shipName2;
 
+	public bool soundOn
+	{
+		get
+		{
+			return PlayerPrefs.GetInt("SoundOn",  1) == 1 ? true : false;
+		}
+		set
+		{
+			PlayerPrefs.SetInt("SoundOn",  value == true ? 1 : 0);
+		}
+	}
+
 	public bool IsShipLocked(int index)
 	{
 		if (index == 0)

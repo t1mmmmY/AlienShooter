@@ -28,6 +28,10 @@ public class GameManager : MonoBehaviour
 	[SerializeField] GameObject waitingPanel;
 	[SerializeField] EndGameScreen[] endGameScreens;
 
+	[SerializeField] GameObject showAdButton;
+	[SerializeField] GameObject adButtonUsed;
+	[SerializeField] GameObject shipUnlockedLabel;
+
 	List<IShip> shipControllers;
 	bool endScreenEnabled = false;
 
@@ -51,6 +55,7 @@ public class GameManager : MonoBehaviour
 
 	void Start()
 	{
+		AudioListener.volume = Synchronisator.Instance.soundOn ? 1 : 0;
 		quitButton.gameObject.SetActive(false);
 		PrepareGame(Synchronisator.Instance.gameType);
 		StartCoroutine("GameTimer");
@@ -95,13 +100,13 @@ public class GameManager : MonoBehaviour
 	public void RestartGame()
 	{
 		numberOfRestarts++;
-		if (numberOfRestarts >= AdvertisingManager.Instance.adFrequency)
+		if (numberOfRestarts >= AdvertisingManager.Instance.adFrequency && AdvertisingManager.Instance.isFullScreenBannerReady)
 		{
+			numberOfRestarts = 0;
 			AdvertisingManager.Instance.ShowFullScreenAd(() =>
 				{
 					UnityEngine.SceneManagement.SceneManager.LoadScene(2);
 				});
-			numberOfRestarts = 0;
 		}
 		else
 		{
@@ -121,21 +126,36 @@ public class GameManager : MonoBehaviour
 		NetworkHelper.Instance.JoinRoom();
 	}
 
+	public void WatchAdAndUnlockShip()
+	{
+		AdvertisingManager.Instance.ShowVideo(() =>
+			{
+				showAdButton.SetActive(false);
+				adButtonUsed.SetActive(true);
+				numberOfRestarts = 0;
+
+				if (shipControllers.Count > 1)
+				{
+					Synchronisator.Instance.UnlockShip(shipControllers[1].shipNumber);
+				}
+			});
+	}
+
 	public void MultPlayerReady()
 	{
 	}
 
-	public void NextEnemy(IShip oldShip)
-	{
-//		Synchronisator.Instance.UnlockShip(oldShip.shipNumber);
-		if (shipControllers.Contains(oldShip))
-		{
-			shipControllers.Remove(oldShip);
-		}
-		IShip newShip = CreateAI(1, shipsVariation.GetRandomShip(), shipsVariation.GetRandomColor(Synchronisator.Instance.shipColor1));
-		newShip.StartGame();
-		shipControllers.Add(newShip);
-	}
+//	public void NextEnemy(IShip oldShip)
+//	{
+////		Synchronisator.Instance.UnlockShip(oldShip.shipNumber);
+//		if (shipControllers.Contains(oldShip))
+//		{
+//			shipControllers.Remove(oldShip);
+//		}
+//		IShip newShip = CreateAI(1, shipsVariation.GetRandomShip(), shipsVariation.GetRandomColor(Synchronisator.Instance.shipColor1));
+//		newShip.StartGame();
+//		shipControllers.Add(newShip);
+//	}
 
 	void RemoveShip(IShip ship)
 	{
@@ -248,7 +268,7 @@ public class GameManager : MonoBehaviour
 		quitButton.gameObject.SetActive(true);
 	}
 
-	public void ShowEndGameScreen(EndGameScreenType screenType)
+	public void ShowEndGameScreen(EndGameScreenType screenType, bool shipUnlocked = false)
 	{
 		if (endScreenEnabled)
 		{
@@ -256,6 +276,14 @@ public class GameManager : MonoBehaviour
 		}
 		GetScreen(screenType).SetActive(true);
 		endScreenEnabled = true;
+
+		if (screenType == EndGameScreenType.LooseAI)
+		{
+			showAdButton.SetActive(AdvertisingManager.Instance.isVideoReady && shipControllers.Count > 1);
+			adButtonUsed.SetActive(false);
+		}
+
+		shipUnlockedLabel.SetActive(shipUnlocked);
 	}
 
 	void ShowLostConnectionScreen()
@@ -273,13 +301,13 @@ public class GameManager : MonoBehaviour
 		}
 
 		numberOfRestarts++;
-		if (numberOfRestarts >= AdvertisingManager.Instance.adFrequency)
+		if (numberOfRestarts >= AdvertisingManager.Instance.adFrequency && AdvertisingManager.Instance.isFullScreenBannerReady)
 		{
+			numberOfRestarts = 0;
 			AdvertisingManager.Instance.ShowFullScreenAd(() =>
 				{
 					UnityEngine.SceneManagement.SceneManager.LoadScene(1);
 				});
-			numberOfRestarts = 0;
 		}
 		else
 		{

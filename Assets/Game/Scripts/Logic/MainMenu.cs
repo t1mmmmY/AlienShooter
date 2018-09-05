@@ -18,6 +18,9 @@ public class MainMenu : MonoBehaviour
 	[SerializeField] SelectShipButton[] selectShipButtons;
 	[SerializeField] Text gameModeDescription;
 
+	[SerializeField] GameObject soundOnButton;
+	[SerializeField] GameObject soundOffButton;
+
 	bool player1Ready = false;
 	bool player2Ready = false;
 
@@ -26,6 +29,8 @@ public class MainMenu : MonoBehaviour
 		Application.targetFrameRate = 30;
 		player1Selection.SetActive(false);
 		player2Selection.SetActive(false);
+
+		SetSound(Synchronisator.Instance.soundOn);
 
 		AdvertisingManager.Instance.ShowBanner(() =>
 			{
@@ -142,5 +147,23 @@ public class MainMenu : MonoBehaviour
 	public int GetShipCount()
 	{
 		return shipsVariation.shipNames.Length;
+	}
+
+	public void SoundOn()
+	{
+		SetSound(true);
+	}
+
+	public void SoundOff()
+	{
+		SetSound(false);
+	}
+
+	private void SetSound(bool isEnable)
+	{
+		soundOnButton.SetActive(!isEnable);
+		soundOffButton.SetActive(isEnable);
+		Synchronisator.Instance.soundOn = isEnable;
+		AudioListener.volume = isEnable ? 1 : 0;
 	}
 }

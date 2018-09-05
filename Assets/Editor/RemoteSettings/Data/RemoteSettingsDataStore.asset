@@ -13,5 +13,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rsKeyList:
   - key: AdFrequency
-    value: 3
+    value: 4
     type: int

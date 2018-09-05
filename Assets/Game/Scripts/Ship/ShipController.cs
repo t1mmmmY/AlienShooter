@@ -465,6 +465,7 @@ public class ShipController : Photon.MonoBehaviour, IShip
 
 	void ShowEndGameScreen()
 	{
+		bool shipUnlocked = false;
 		switch (Synchronisator.Instance.gameType)
 		{
 			case GameType.WithAI:
@@ -476,8 +477,12 @@ public class ShipController : Photon.MonoBehaviour, IShip
 				else
 				{
 					//Enemy AI dead
-					GameManager.Instance.ShowEndGameScreen(EndGameScreenType.WinAI);
-					Synchronisator.Instance.UnlockShip(this.shipNumber);
+					if (Synchronisator.Instance.IsShipLocked(this.shipNumber))
+					{
+						Synchronisator.Instance.UnlockShip(this.shipNumber);
+						shipUnlocked = true;
+					}
+					GameManager.Instance.ShowEndGameScreen(EndGameScreenType.WinAI, shipUnlocked);
 				}
 				break;
 			case GameType.LocalMultiplayer:
@@ -502,8 +507,12 @@ public class ShipController : Photon.MonoBehaviour, IShip
 				else
 				{
 					//Enemy dead
-					GameManager.Instance.ShowEndGameScreen(EndGameScreenType.WinMultiplayer);
-					Synchronisator.Instance.UnlockShip(this.shipNumber);
+					if (Synchronisator.Instance.IsShipLocked(this.shipNumber))
+					{
+						Synchronisator.Instance.UnlockShip(this.shipNumber);
+						shipUnlocked = true;
+					}
+					GameManager.Instance.ShowEndGameScreen(EndGameScreenType.WinMultiplayer, shipUnlocked);
 				}
 				break;
 		}
